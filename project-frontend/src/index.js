@@ -49,31 +49,26 @@ function findRecipes () {
         let filteredRecipes = array.filter(recipe => {
                  return recipe.course.toLowerCase().includes(search)
                  })
+        if (filteredRecipes.length == 0) {
+            alert("Please enter a valid course: main, starter, side, or dessert");
+        }
+        else { 
         for (const recipe of filteredRecipes) {
             searchResults.push(new Recipe(recipe.name, recipe.ingredients, recipe.time, recipe.steps, recipe.skill_level, recipe.course))
           }
         courseButton.removeEventListener('click', findRecipes)
         let question = document.getElementById('course-question')
         question.className = "selected"
-        // let searchResults = array.filter(recipe => {
-        //     return recipe.course.toLowerCase().includes(search)
-        //     })
-        // console.log(searchResults)
+
         for (const recipe of searchResults) {
             renderRecipeName(recipe)
           }
+        }
       })
+     
     }
 }
 
-let testButton = document.createElement("button");
-testButton.innerHTML = `Test`
-container.appendChild(testButton)
-testButton.addEventListener('click', () => {
-    for (const recipe of searchResults) {
-        console.log(recipe)
-      }
-})
 
 
 })
