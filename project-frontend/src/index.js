@@ -21,18 +21,31 @@ document.addEventListener('DOMContentLoaded', () => {
 let courseButton = document.getElementById('course-button')
 let courseText = document.querySelector('input[name="course"]')
 courseButton.addEventListener('click', () => {
-
+    
     fetch(RECIPES_URL)
     .then(function(response) {
         return response.json();
       })
       .then(function(array) {
-        for (const recipe of array) {
-          console.log(recipe.name)
-          // courseText.value
-        }
+        const search = courseText.value.toLowerCase()
+        let searchResults = array.filter(recipe => {
+            return recipe.course.toLowerCase().includes(search)
+            })
+        console.log(searchResults)
+        for (const recipe of searchResults) {
+            renderRecipeName(recipe)
+          }
       })
 
 })
 
 })
+
+function renderRecipeName(recipe) {
+    let potentialResults = document.getElementById('results')
+    let item = document.createElement('p')
+    item.innerHTML = recipe.name
+    potentialResults.appendChild(item)
+}
+
+// @mountains = Mountain.where('country LIKE ?', "%#{params[:country]}%")
