@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('container')
     const newDiv = document.createElement('div')
     newDiv.className = 'card'
+    newDiv.id = 'question-list'
     let question = document.createElement('p')
     question.id = "course-question"
     question.innerHTML = `What course are you making? `
@@ -60,9 +61,13 @@ function findRecipes () {
         let question = document.getElementById('course-question')
         question.className = "selected"
 
+        appendIngredientsQuestion()
+    
         for (const recipe of searchResults) {
             renderRecipeName(recipe)
           }
+
+        
         }
       })
      
@@ -80,3 +85,19 @@ function renderRecipeName(recipe) {
     potentialResults.appendChild(item)
 }
 
+function appendIngredientsQuestion() {
+    let div = document.getElementById('question-list')
+        let question = document.createElement('p')
+        question.id = "ingredients-question"
+        question.innerHTML = `What ingredients do you have? `
+        let input = document.createElement("input");
+            input.type = "text"
+            input.name = "ingredients"
+        let btn = document.createElement("button");
+            btn.id = "ingredients-button"
+            btn.innerText = `Enter`
+        question.appendChild(input)
+        question.appendChild(btn)
+        div.appendChild(question)
+
+}
