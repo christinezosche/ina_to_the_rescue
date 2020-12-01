@@ -1,4 +1,6 @@
-document.addEventListener('DOMContentLoaded', function () {
+const RECIPES_URL = `http://localhost:3000/recipes`
+
+document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('container')
     const newDiv = document.createElement('div')
     newDiv.className = 'card'
@@ -7,7 +9,30 @@ document.addEventListener('DOMContentLoaded', function () {
     let input = document.createElement("input");
         input.type = "text"
         input.name = "course"
+    let btn = document.createElement("button");
+        btn.id = "course-button"
+        btn.innerText = `Enter`
     question.appendChild(input)
+    question.appendChild(btn)
     newDiv.appendChild(question)
     container.append(newDiv)
+
+
+let courseButton = document.getElementById('course-button')
+let courseText = document.querySelector('input[name="course"]')
+courseButton.addEventListener('click', () => {
+
+    fetch(RECIPES_URL)
+    .then(function(response) {
+        return response.json();
+      })
+      .then(function(array) {
+        for (const recipe of array) {
+          console.log(recipe.name)
+          // courseText.value
+        }
+      })
+
+})
+
 })
