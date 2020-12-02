@@ -1,4 +1,5 @@
 class Recipe {
+    static all = [];
     constructor(id, name, ingredients, time, steps, skill_level, course, ratings) {
       this.id = id;
       this.name = name;
@@ -7,17 +8,18 @@ class Recipe {
       this.steps = steps;
       this.skill_level = skill_level;
       this.course = course;
-      this.ratings = ratings
+      this.ratings = ratings;
+      this.constructor.all.push(this)
     }
 
-    static filterByCourse (search) {
+    static filterByCourse = (search) => 
         this.all.filter(recipe => {
             return recipe.course.toLowerCase().includes(search)
             })
-    }
+
+
   }
 
-const searchResults = []
 const RECIPES_URL = `http://localhost:3000/recipes`
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -27,13 +29,14 @@ document.addEventListener('DOMContentLoaded', () => {
       })
     .then(function(array) {
         for (const recipe of array) {
-           new Recipe(recipe.id, recipe.name, recipe.ingredients, recipe.time, recipe.steps, recipe.skill_level, recipe.cours, recipe.ratings)
+           new Recipe(recipe.id, recipe.name, recipe.ingredients, recipe.time, recipe.steps, recipe.skill_level, recipe.course, recipe.ratings)
           }
+        })
 
     renderPrompt()
-}
+})
 
-function renderPrompt() {
+function renderPrompt () {
     const container = document.getElementById('container')
     const newDiv = document.createElement('div')
     newDiv.className = 'card'
@@ -45,20 +48,20 @@ function renderPrompt() {
         input.type = "text"
         input.name = "course"
     let btn = document.createElement("button");
-        btn.id = "course-button"
+        btn.id = 'course-button'
         btn.innerText = `Enter`
+        btn.addEventListener('click', findRecipesByCourse)
     question.appendChild(input)
     question.appendChild(btn)
     newDiv.appendChild(question)
     container.appendChild(newDiv)
-
-
-let courseButton = document.getElementById('course-button')
-let courseText = document.querySelector('input[name="course"]')
-courseButton.addEventListener('click', findRecipes)
 }
 
-function findRecipes () {
+
+
+function findRecipesByCourse () {
+    let courseButton = document.getElementById('course-button')
+    let courseText = document.querySelector('input[name="course"]')
     if (courseText.value == '') {
         alert("Please enter a course");
     }
@@ -69,7 +72,7 @@ function findRecipes () {
             alert("Please enter a valid course: main, starter, side, or dessert");
         }
         else { 
-        courseButton.removeEventListener('click', findRecipes)
+        courseButton.removeEventListener('click', findRecipesByCourse)
         let question = document.getElementById('course-question')
         question.className = "selected"
         
@@ -79,14 +82,9 @@ function findRecipes () {
             renderRecipeName(recipe)
           }
         }
-      })
-     
-    }
+      }
 }
 
-
-
-})
 
 function renderRecipeName(recipe) {
     let potentialResults = document.getElementById('results')
@@ -109,5 +107,10 @@ function appendIngredientsQuestion() {
         question.appendChild(input)
         question.appendChild(btn)
         div.appendChild(question)
+        btn.addEventListener('click', findRecipesByIngredients)
+       
+}
 
+function findRecipesByIngredients() {
+    console.log("ingredients")
 }
