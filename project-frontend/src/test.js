@@ -9,12 +9,31 @@ class Recipe {
       this.course = course;
       this.ratings = ratings
     }
+
+    static filterByCourse (search) {
+        this.all.filter(recipe => {
+            return recipe.course.toLowerCase().includes(search)
+            })
+    }
   }
 
 const searchResults = []
 const RECIPES_URL = `http://localhost:3000/recipes`
 
 document.addEventListener('DOMContentLoaded', () => {
+    fetch(RECIPES_URL)
+    .then(function(response) {
+        return response.json();
+      })
+    .then(function(array) {
+        for (const recipe of array) {
+           new Recipe(recipe.id, recipe.name, recipe.ingredients, recipe.time, recipe.steps, recipe.skill_level, recipe.cours, recipe.ratings)
+          }
+
+    renderPrompt()
+}
+
+function renderPrompt() {
     const container = document.getElementById('container')
     const newDiv = document.createElement('div')
     newDiv.className = 'card'
@@ -37,40 +56,28 @@ document.addEventListener('DOMContentLoaded', () => {
 let courseButton = document.getElementById('course-button')
 let courseText = document.querySelector('input[name="course"]')
 courseButton.addEventListener('click', findRecipes)
+}
 
 function findRecipes () {
     if (courseText.value == '') {
         alert("Please enter a course");
     }
     else {
-    fetch(RECIPES_URL)
-    .then(function(response) {
-        return response.json();
-      })
-      .then(function(array) {
         const search = courseText.value.toLowerCase()
-        let filteredRecipes = array.filter(recipe => {
-                 return recipe.course.toLowerCase().includes(search)
-                 })
+        let filteredRecipes = Recipe.filterByCourse(search)
         if (filteredRecipes.length == 0) {
             alert("Please enter a valid course: main, starter, side, or dessert");
         }
         else { 
-        for (const recipe of filteredRecipes) {
-            searchResults.push(new Recipe(recipe.id, recipe.name, recipe.ingredients, recipe.time, recipe.steps, recipe.skill_level, recipe.course))
-          }
         courseButton.removeEventListener('click', findRecipes)
         let question = document.getElementById('course-question')
         question.className = "selected"
         
         appendIngredientsQuestion()
     
-        for (const recipe of searchResults) {
+        for (const recipe of filteredRecipes) {
             renderRecipeName(recipe)
-            console.log(recipe)
           }
-
-        
         }
       })
      
