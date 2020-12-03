@@ -1,20 +1,41 @@
 class Recipe {
-    constructor(id, name, ingredients, time, steps, skill_level, course, ratings) {
+    static all = [];
+    constructor(id, name, ingredients, time, skill_level, course, ratings) {
       this.id = id;
       this.name = name;
       this.ingredients = ingredients;
       this.time = time;
-      this.steps = steps;
       this.skill_level = skill_level;
       this.course = course;
-      this.ratings = ratings
+      this.ratings = ratings;
+      this.constructor.all.push(this)
     }
+
+    static filterByCourse = (search) => 
+        this.all.filter(recipe => {
+            return recipe.course.toLowerCase().includes(search)
+            })
+
+
   }
 
-const searchResults = []
 const RECIPES_URL = `http://localhost:3000/recipes`
 
 document.addEventListener('DOMContentLoaded', () => {
+    fetch(RECIPES_URL)
+    .then(function(response) {
+        return response.json();
+      })
+    .then(function(array) {
+        for (const recipe of array) {
+           new Recipe(recipe.id, recipe.name, recipe.ingredients, recipe.time, recipe.steps, recipe.skill_level, recipe.course, recipe.ratings)
+          }
+        })
+
+    renderPrompt()
+})
+
+function renderPrompt () {
     const container = document.getElementById('container')
     const newDiv = document.createElement('div')
     newDiv.className = 'card'
@@ -26,60 +47,43 @@ document.addEventListener('DOMContentLoaded', () => {
         input.type = "text"
         input.name = "course"
     let btn = document.createElement("button");
-        btn.id = "course-button"
+        btn.id = 'course-button'
         btn.innerText = `Enter`
+        btn.addEventListener('click', findRecipesByCourse)
     question.appendChild(input)
     question.appendChild(btn)
     newDiv.appendChild(question)
     container.appendChild(newDiv)
+}
 
 
-let courseButton = document.getElementById('course-button')
-let courseText = document.querySelector('input[name="course"]')
-courseButton.addEventListener('click', findRecipes)
 
-function findRecipes () {
+function findRecipesByCourse () {
+    let courseButton = document.getElementById('course-button')
+    let courseText = document.querySelector('input[name="course"]')
     if (courseText.value == '') {
         alert("Please enter a course");
     }
     else {
-    fetch(RECIPES_URL)
-    .then(function(response) {
-        return response.json();
-      })
-      .then(function(array) {
         const search = courseText.value.toLowerCase()
-        let filteredRecipes = array.filter(recipe => {
-                 return recipe.course.toLowerCase().includes(search)
-                 })
+        let filteredRecipes = Recipe.filterByCourse(search)
         if (filteredRecipes.length == 0) {
             alert("Please enter a valid course: main, starter, side, or dessert");
         }
         else { 
-        for (const recipe of filteredRecipes) {
-            searchResults.push(new Recipe(recipe.id, recipe.name, recipe.ingredients, recipe.time, recipe.steps, recipe.skill_level, recipe.course))
-          }
-        courseButton.removeEventListener('click', findRecipes)
+        courseButton.removeEventListener('click', findRecipesByCourse)
         let question = document.getElementById('course-question')
         question.className = "selected"
         
         appendIngredientsQuestion()
     
-        for (const recipe of searchResults) {
+        for (const recipe of filteredRecipes) {
             renderRecipeName(recipe)
-            console.log(recipe)
           }
-
-        
         }
-      })
-     
-    }
+      }
 }
 
-
-
-})
 
 function renderRecipeName(recipe) {
     let potentialResults = document.getElementById('results')
@@ -102,5 +106,10 @@ function appendIngredientsQuestion() {
         question.appendChild(input)
         question.appendChild(btn)
         div.appendChild(question)
+        btn.addEventListener('click', findRecipesByIngredients)
+       
+}
 
+function findRecipesByIngredients() {
+    console.log("ingredients")
 }
