@@ -13,8 +13,18 @@ class Recipe {
 
     static filterByCourse = (search) => 
         this.all.filter(recipe => {
-            return recipe.course.toLowerCase().includes(search)
+            return recipe.course.includes(search)
             })
+    
+    static filterByCourseAndIngredients (course, ingredient) {
+        let filteredRecipes = this.all.filter(recipe => {
+            return recipe.course.toLowerCase().includes(course)
+            })
+        return filteredRecipes.filter(recipe => {
+            return recipe.ingredients.toLowerCase().includes(ingredient)
+        }) 
+    }
+    
 
 
   }
@@ -43,15 +53,6 @@ function renderPrompt () {
     let question = document.createElement('p')
     question.id = "course-question"
     question.innerHTML = `What course are you making? `
-    // let input = document.createElement("input");
-    //     input.type = "text"
-    //     input.name = "course"
-    // let btn = document.createElement("button");
-    //     btn.id = 'course-button'
-    //     btn.innerText = `Enter`
-    //     btn.addEventListener('click', findRecipesByCourse)
-    // question.appendChild(input)
-    // question.appendChild(btn)
     select = document.createElement("select");
     select.id = 'course-list'
     select.options.add( new Option(" ","", true, true) );
@@ -75,22 +76,7 @@ function findRecipesByCourse () {
 
     let question = document.getElementById('course-question')
     question.className = "selected"
-    // let courseButton = document.getElementById('course-button')
-    // let courseText = document.querySelector('input[name="course"]')
-    // if (courseText.value == '') {
-    //     alert("Please enter a course");
-    // }
-    // else {
-    //     const search = courseText.value.toLowerCase()
-    //     let filteredRecipes = Recipe.filterByCourse(search)
-    //     if (filteredRecipes.length == 0) {
-    //         alert("Please enter a valid course: main, starter, side, or dessert");
-    //     }
-    //     else { 
-    //     courseButton.removeEventListener('click', findRecipesByCourse)
-    //     let question = document.getElementById('course-question')
-    //     question.className = "selected"
-        
+    
         appendIngredientsQuestion()
     
         for (const recipe of filteredRecipes) {
@@ -127,5 +113,33 @@ function appendIngredientsQuestion() {
 }
 
 function findRecipesByIngredients() {
-    console.log("ingredients")
+    let courseList = document.getElementById('course-list')
+    let ingredientsButton = document.getElementById('ingredients-button')
+    let ingredientsText = document.querySelector('input[name="ingredients"]')
+    if (ingredientsText.value == '' || ingredientsText.value == ' ') {
+        alert("Please enter an ingredient");
+    }
+    else {
+        const ingredients = ingredientsText.value.toLowerCase().replace(/[^A-Za-z0-9-' ]+/g, '');
+        let filteredRecipes = Recipe.filterByCourseAndIngredients(courseList.value, ingredients)
+       
+        if (filteredRecipes.length == 0) {
+            alert("No recipes were found with that ingredient");
+        }
+        else { 
+        ingredientsButton.removeEventListener('click', findRecipesByIngredients)
+        let question = document.getElementById('ingredients-question')
+        question.className = "selected"
+        }
+        
 }
+}
+// let input = document.createElement("input");
+    //     input.type = "text"
+    //     input.name = "course"
+    // let btn = document.createElement("button");
+    //     btn.id = 'course-button'
+    //     btn.innerText = `Enter`
+    //     btn.addEventListener('click', findRecipesByCourse)
+    // question.appendChild(input)
+    // question.appendChild(btn)
