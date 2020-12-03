@@ -116,22 +116,37 @@ function findRecipesByIngredients() {
     let courseList = document.getElementById('course-list')
     let ingredientsButton = document.getElementById('ingredients-button')
     let ingredientsText = document.querySelector('input[name="ingredients"]')
+    let question = document.getElementById('ingredients-question')
     if (ingredientsText.value == '' || ingredientsText.value == ' ') {
-        alert("Please enter an ingredient");
+        if (question.childNodes[3]) {
+            question.removeChild(question.childNodes[3]); }
+        let alert = document.createElement("p")
+            alert.innerText = `Please enter an ingredient.`
+            alert.className = "alert"
+            question.appendChild(alert)
     }
     else {
-        const ingredients = ingredientsText.value.toLowerCase().replace(/[^A-Za-z0-9-' ]+/g, '');
-        let filteredRecipes = Recipe.filterByCourseAndIngredients(courseList.value, ingredients)
+        if (question.childNodes[3]) {
+            question.removeChild(question.childNodes[3]); }
        
-        if (filteredRecipes.length == 0) {
-            alert("No recipes were found with that ingredient");
-        }
-        else { 
-        ingredientsButton.removeEventListener('click', findRecipesByIngredients)
-        let question = document.getElementById('ingredients-question')
-        question.className = "selected"
-        }
-        
+            const ingredients = ingredientsText.value.toLowerCase().replace(/[^A-Za-z0-9-' ]+/g, '');
+            let filteredRecipes = Recipe.filterByCourseAndIngredients(courseList.value, ingredients)
+       
+            if (filteredRecipes.length == 0) {
+                let alert = document.createElement("p")
+                alert.innerText = `No recipes were found with that ingredient. Try again!`
+                alert.className = "alert"
+                question.appendChild(alert)
+            }
+            else { 
+                if (question.childNodes[3]) {
+                    question.removeChild(question.childNodes[3]); }
+                else {
+                ingredientsButton.removeEventListener('click', findRecipesByIngredients)
+                question.className = "selected"
+                }
+            }
+    
 }
 }
 // let input = document.createElement("input");
