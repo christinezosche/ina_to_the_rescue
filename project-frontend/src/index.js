@@ -119,7 +119,7 @@ function findRecipesByIngredients() {
     let question = document.getElementById('ingredients-question')
     if (ingredientsText.value == '' || ingredientsText.value == ' ') {
         if (question.childNodes[3]) {
-            question.removeChild(question.childNodes[3]); }
+            removeAlert(question, 3); }
         let alert = document.createElement("p")
             alert.innerText = `Please enter an ingredient.`
             alert.className = "alert"
@@ -127,27 +127,76 @@ function findRecipesByIngredients() {
     }
     else {
         if (question.childNodes[3]) {
-            question.removeChild(question.childNodes[3]); }
+            removeAlert(question, 3); }
        
             const ingredients = ingredientsText.value.toLowerCase().replace(/[^A-Za-z0-9-' ]+/g, '');
             let filteredRecipes = Recipe.filterByCourseAndIngredients(courseList.value, ingredients)
        
             if (filteredRecipes.length == 0) {
                 let alert = document.createElement("p")
-                alert.innerText = `No recipes were found with that ingredient. Try again!`
                 alert.className = "alert"
+                alert.innerText = `No recipes were found with that ingredient.`
+                let btn1 = document.createElement("button")
+                btn1.innerText = "Try again"
+                let btn2 = document.createElement("button")
+                btn2.innerText = "Skip this step, I'll shop"
+                alert.appendChild(btn1)
+                alert.appendChild(btn2)
+
+                btn1.addEventListener("click", function (){
+                    ingredientsText.value = ''
+                    removeAlert(question, 3);;
+                })
+
+                btn2.addEventListener("click", function (){
+                    removeAlert(question, 3);
+                    question.className = "selected"
+                    ingredientsButton.removeEventListener('click', findRecipesByIngredients)
+                    appendTimeQuestion()
+                })
+                
                 question.appendChild(alert)
             }
             else { 
                 if (question.childNodes[3]) {
-                    question.removeChild(question.childNodes[3]); }
+                    removeAlert(question, 3); }
                 else {
                 ingredientsButton.removeEventListener('click', findRecipesByIngredients)
                 question.className = "selected"
+                appendTimeQuestion()
                 }
             }
     
 }
+}
+
+function removeAlert (element, index) {
+    element.removeChild(element.childNodes[index]);
+}
+
+function appendTimeQuestion () {
+    let div = document.getElementById('question-list')
+    let question = document.createElement('p')
+    question.id = "time-question"
+    question.innerHTML = `How much time do you have? `
+    select = document.createElement("select");
+    select.id = 'time-list'
+    select.options.add( new Option(" ","", true, true) );
+    select.options.add( new Option("15 minutes",15) );
+    select.options.add( new Option("30 minutes",30) );
+    select.options.add( new Option("45 minutes",45) );
+    select.options.add( new Option("One hour",60) );
+    select.options.add( new Option("90 minutes",90) );
+    select.options.add( new Option("2 hours",120) );
+    select.options.add( new Option("More than two hours",0) );
+    select.addEventListener("change", findRecipesByTime)
+    question.appendChild(select)
+    div.appendChild(question)
+    container.appendChild(div)
+}
+
+function findRecipesByTime () {
+    console.log("time")
 }
 // let input = document.createElement("input");
     //     input.type = "text"
