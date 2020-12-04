@@ -10,7 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_30_231413) do
+ActiveRecord::Schema.define(version: 2020_12_04_155011) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "ratings", force: :cascade do |t|
     t.integer "value"
@@ -24,7 +27,6 @@ ActiveRecord::Schema.define(version: 2020_11_30_231413) do
     t.string "ingredients"
     t.integer "time"
     t.string "steps"
-    t.string "skill_level"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "course"
