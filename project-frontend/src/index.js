@@ -284,13 +284,6 @@ function fetchMatchingRecipe(recipeArray) {
     let question = document.getElementById('time-question')
     question.className = "selected"
 
-    let potentialResults = document.getElementById('results')
-    potentialResults.innerHTML = ''
-
-    for (const recipe of recipeArray) {
-        renderRecipeName(recipe)
-      }
-
     let selectedRecipe = recipeArray[0]
 
     fetch(`${RECIPES_URL}/${selectedRecipe.id}`)
@@ -314,7 +307,7 @@ function renderRecipeCard(recipe) {
     let rating = document.createElement("h2")
     rating.innerText = `&#9734; ${recipe.ratings}`
     let time = document.createElement("h2")
-    time.innerText = `${recipe.time}`
+    time.innerText = recipeTime(recipe.time)
     let ingredients = document.createElement("ul")
     let ingredientsArray = recipe.ingredients.split("; ")
     for (const i of ingredientsArray) {
@@ -331,4 +324,23 @@ function renderRecipeCard(recipe) {
     newDiv.appendChild(steps)
     container.appendChild(newDiv)
 
+}
+
+function recipeTime(minutes) {
+    if (minutes < 60) {
+        return `${minutes} minutes`
+    }
+    else if (minutes % 60 === 0) {
+        return `${minutes/60} hours`
+    }
+    else {
+        let rawQuotient = minutes/60
+        let remainder = rawQuotient % 1;
+        if (remainder < 1 && remainder > 0.5) {
+            return `${rawQuotient - remainder + 1} hours`
+        }
+        else {
+            return `${rawQuotient - remainder} 1/2 hours`
+        }
+    }
 }
