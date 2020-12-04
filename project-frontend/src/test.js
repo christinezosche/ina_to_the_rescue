@@ -34,18 +34,13 @@ class Recipe {
 
     }
 
-    static filterByCourseIngredientsAndTime (course, ingredient, time) {
-        let filteredRecipes = this.all.filter(recipe => {
-            return recipe.course.includes(course)
-            })
-        let filteredRecipesByIngredient = filteredRecipes.filter(recipe => {
-            return recipe.ingredients.toLowerCase().includes(ingredient)
-        }) 
+    static filterByCourseIngredientsAndTime (course, ingredients, time) {
+        let filteredByCourseAndIngredients = Recipe.filterByCourseAndIngredients (course, ingredients)
         if (time === 0) {
-            return filteredRecipesByIngredient
+            return filteredByCourseAndIngredients
         }
         else {
-        return filteredRecipesByIngredient.filter(recipe => {
+        return filteredByCourseAndIngredients.filter(recipe => {
             return recipe.time <= time
         })
         }
@@ -162,7 +157,7 @@ function findRecipesByIngredients() {
             if (filteredRecipes.length === 0) {
                 let alert = document.createElement("p")
                 alert.className = "alert"
-                alert.innerText = `No recipes were found with that ingredient.`
+                alert.innerText = `No recipes found.`
                 renderAlertButtons(alert)
                 question.appendChild(alert)
             }
@@ -240,7 +235,8 @@ function findRecipesByTime () {
 let timeList = document.getElementById('time-list')
 let courseList = document.getElementById('course-list')
 let ingredientsText = document.querySelector('input[name="ingredients"]')
-let filteredRecipes = Recipe.filterByCourseIngredientsAndTime(courseList.value, ingredientsText.value, parseInt(timeList.value))
+const ingredients = sanitizeAndSplit(ingredientsText.value)
+let filteredRecipes = Recipe.filterByCourseIngredientsAndTime(courseList.value, ingredients, parseInt(timeList.value))
 timeList.removeEventListener("change", findRecipesByTime)
 timeList.disabled = true;
 
