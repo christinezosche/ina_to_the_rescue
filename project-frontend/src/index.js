@@ -243,6 +243,7 @@ let ingredientsText = document.querySelector('input[name="ingredients"]')
 const ingredients = sanitizeAndSplit(ingredientsText.value)
 let filteredRecipes = Recipe.filterByCourseIngredientsAndTime(courseList.value, ingredients, parseInt(timeList.value))
 let question = document.getElementById('time-question')
+let potentialResults = document.getElementById('results')
 if (question.childNodes[2]) {
     removeAlert(question, 2); }
 
@@ -254,6 +255,7 @@ if (filteredRecipes.length === 0) {
     btn.innerText = "Skip this step"
     btn.addEventListener("click", function (){
         removeAlert(question, 2);
+        potentialResults.innerHTML = ''
         fetchMatchingRecipe(Recipe.filterByCourseAndIngredients(courseList.value, ingredients))
     })
     alert.appendChild(btn)
@@ -261,6 +263,7 @@ if (filteredRecipes.length === 0) {
     }
 
 else {
+    potentialResults.innerHTML = ''
     fetchMatchingRecipe(filteredRecipes)
 }
 
@@ -274,6 +277,7 @@ function sanitizeAndSplit (string) {
 }
 
 function fetchMatchingRecipe(recipeArray) {
+    
     let timeList = document.getElementById('time-list')
     timeList.removeEventListener("change", findRecipesByTime)
     timeList.disabled = true;
@@ -294,10 +298,37 @@ function fetchMatchingRecipe(recipeArray) {
             return response.json();
         })
         .then(function(object) {
+            const container = document.getElementById('container')
+            container.innerHTML = ''
             renderRecipeCard(object)
             })
 }
 
 function renderRecipeCard(recipe) {
-    console.log(recipe.steps)
+    const container = document.getElementById('container')
+    const newDiv = document.createElement('div')
+    newDiv.className = 'card'
+    newDiv.id = 'matching-recipe'
+    let title = document.createElement("h1")
+    title.innerText = `${recipe.name}`
+    let rating = document.createElement("h2")
+    rating.innerText = `&#9734; ${recipe.ratings}`
+    let time = document.createElement("h2")
+    time.innerText = `${recipe.time}`
+    let ingredients = document.createElement("ul")
+    let ingredientsArray = recipe.ingredients.split("; ")
+    for (const i of ingredientsArray) {
+        let li = document.createElement("li")
+        li.innerText = i
+        ingredients.appendChild(li)
+    }
+    let steps = document.createElement("p")
+    steps.innerText = recipe.steps
+    newDiv.appendChild(title)
+    newDiv.appendChild(rating)
+    newDiv.appendChild(time)
+    newDiv.appendChild(ingredients)
+    newDiv.appendChild(steps)
+    container.appendChild(newDiv)
+
 }
