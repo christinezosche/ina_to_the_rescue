@@ -140,6 +140,7 @@ function findRecipesByIngredients() {
         let alert = document.createElement("p")
             alert.innerText = `Please enter an ingredient.`
             alert.className = "alert"
+            renderAlertButtons(alert)
             question.appendChild(alert)
     }
     else {
@@ -153,26 +154,7 @@ function findRecipesByIngredients() {
                 let alert = document.createElement("p")
                 alert.className = "alert"
                 alert.innerText = `No recipes were found with that ingredient.`
-                let btn1 = document.createElement("button")
-                btn1.innerText = "Try again"
-                let btn2 = document.createElement("button")
-                btn2.innerText = "Skip this step, I'll shop"
-                alert.appendChild(btn1)
-                alert.appendChild(btn2)
-
-                btn1.addEventListener("click", function (){
-                    ingredientsText.value = ''
-                    removeAlert(question, 3);;
-                })
-
-                btn2.addEventListener("click", function (){
-                    removeAlert(question, 3);
-                    ingredientsText.value = ''
-                    question.className = "selected"
-                    ingredientsButton.removeEventListener('click', findRecipesByIngredients)
-                    appendTimeQuestion()
-                })
-                
+                renderAlertButtons(alert)
                 question.appendChild(alert)
             }
             else { 
@@ -191,6 +173,33 @@ function findRecipesByIngredients() {
             }
     
 }
+}
+
+function renderAlertButtons (node) {
+    let ingredientsButton = document.getElementById('ingredients-button')
+    let ingredientsText = document.querySelector('input[name="ingredients"]')
+    let question = document.getElementById('ingredients-question')
+
+    let btn1 = document.createElement("button")
+    btn1.id = "try-again-button"
+    btn1.innerText = "Try again"
+    let btn2 = document.createElement("button")
+    btn2.innerText = "Skip this step, I'll shop"
+    btn2.id = "shop-button"
+    btn1.addEventListener("click", function (){
+        ingredientsText.value = ''
+        removeAlert(question, 3);;
+    })
+
+    btn2.addEventListener("click", function (){
+        removeAlert(question, 3);
+        ingredientsText.value = ''
+        question.className = "selected"
+        ingredientsButton.removeEventListener('click', findRecipesByIngredients)
+        appendTimeQuestion()
+    })
+    node.appendChild(btn1)
+    node.appendChild(btn2)
 }
 
 function removeAlert (element, index) {
@@ -236,12 +245,3 @@ for (const recipe of filteredRecipes) {
         renderRecipeName(recipe)
       }
 }
-// let input = document.createElement("input");
-    //     input.type = "text"
-    //     input.name = "course"
-    // let btn = document.createElement("button");
-    //     btn.id = 'course-button'
-    //     btn.innerText = `Enter`
-    //     btn.addEventListener('click', findRecipesByCourse)
-    // question.appendChild(input)
-    // question.appendChild(btn)
