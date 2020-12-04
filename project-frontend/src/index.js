@@ -1,11 +1,10 @@
 class Recipe {
     static all = [];
-    constructor(id, name, ingredients, time, skill_level, course, ratings) {
+    constructor(id, name, ingredients, time, course, ratings) {
       this.id = id;
       this.name = name;
       this.ingredients = ingredients;
       this.time = time;
-      this.skill_level = skill_level;
       this.course = course;
       this.ratings = ratings;
       this.constructor.all.push(this)
@@ -38,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
       })
     .then(function(array) {
         for (const recipe of array) {
-           new Recipe(recipe.id, recipe.name, recipe.ingredients, recipe.time, recipe.skill_level, recipe.course, recipe.ratings)
+           new Recipe(recipe.id, recipe.name, recipe.ingredients, recipe.time, recipe.course, recipe.ratings)
           }
         })
 
