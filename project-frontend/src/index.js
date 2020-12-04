@@ -283,6 +283,7 @@ function fetchMatchingRecipe(recipeArray) {
     timeList.disabled = true;
     let question = document.getElementById('time-question')
     question.className = "selected"
+    const container = document.getElementById('container')
 
     let selectedRecipe = recipeArray[0]
 
@@ -294,6 +295,7 @@ function fetchMatchingRecipe(recipeArray) {
             const container = document.getElementById('container')
             container.innerHTML = ''
             renderRecipeCard(object)
+            renderFooter(recipeArray)
             })
 }
 
@@ -342,5 +344,69 @@ function recipeTime(minutes) {
         else {
             return `${rawQuotient - remainder} 1/2 hours`
         }
+    }
+}
+
+function renderFooter(recipeArray) {
+    const container = document.getElementById('container')
+    const footer = document.getElementById('results')
+    let prompt = document.createElement("h3")
+    prompt.innerText = `Don't like this recipe?`
+    let btn1 = document.createElement("button")
+    btn1.innerText = `See Other Matches`
+    btn1.addEventListener("click", function (){
+        if (prompt) {
+        prompt.remove();
+        }
+        container.innerHTML = ''
+        renderMiniCards(recipeArray)
+    })
+    let btn2 = document.createElement("button")
+    btn2.innerText = `See All Recipes`
+    btn2.addEventListener("click", function (){
+        if (prompt) {
+            prompt.remove();
+        }
+        container.innerHTML = ''
+        renderMiniCards(Recipe.all)
+    })
+    let btn3 = document.createElement("button")
+    btn3.innerText = `Start Over`
+    btn3.addEventListener("click", function (){
+        location.reload();
+    })
+    footer.appendChild(prompt)
+    footer.appendChild(btn1)
+    footer.appendChild(btn2)
+    footer.appendChild(btn3)
+}
+
+
+
+function renderMiniCards(array) {
+    const container = document.getElementById('container')
+    for (const recipe of array) {
+    const newDiv = document.createElement('div')
+    newDiv.className = 'mini-card'
+    let title = document.createElement("h1")
+    title.innerText = `${recipe.name}`
+    title.addEventListener("click", function(){
+        container.innerHTML = ''
+        fetch(`${RECIPES_URL}/${recipe.id}`)
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(object) {
+            renderRecipeCard(object)
+        })
+    })
+    let rating = document.createElement("h2")
+    rating.innerText = `&#9734; ${recipe.ratings}`
+    let time = document.createElement("h2")
+    time.innerText = recipeTime(recipe.time)
+    newDiv.appendChild(title)
+    newDiv.appendChild(rating)
+    newDiv.appendChild(time)
+    container.appendChild(newDiv)
     }
 }
