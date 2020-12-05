@@ -307,8 +307,7 @@ function renderRecipeCard(recipe) {
     let title = document.createElement("h1")
     title.innerText = `${recipe.name}`
     let rating = document.createElement("h2")
-    rating.className = "rating"
-    rating.innerText = renderRatings(recipe.ratings)
+    rating.id = recipe.id
     let time = document.createElement("h2")
     time.innerText = recipeTime(recipe.time)
     let ingredients = document.createElement("ul")
@@ -329,7 +328,7 @@ function renderRecipeCard(recipe) {
     newDiv.appendChild(steps)
     newDiv.appendChild(ratingFeature)
     container.appendChild(newDiv)
-
+    renderRatings(recipe)
 }
 
 function recipeTime(minutes) {
@@ -405,43 +404,54 @@ function renderMiniCards(array) {
         })
     })
     let rating = document.createElement("h2")
-    rating.className = "rating"
-    rating.innerText = renderRatings(recipe.ratings)
+    rating.id = recipe.id
     let time = document.createElement("h2")
     time.innerText = recipeTime(recipe.time)
     newDiv.appendChild(title)
     newDiv.appendChild(rating)
     newDiv.appendChild(time)
     container.appendChild(newDiv)
+    renderRatings(recipe)
     }
 }
 
-function renderRatings(ratingsArray) {
-    if (ratingsArray === []) {
-        let avgRating = 0
-    }
-    else {
-    let avgRating = ratingsArray.reduce((a, b) => (a + b)) / ratingsArray.length;
-    }
+function renderRatings(recipe) {
+    let ratingContainer = document.getElementById(recipe.id)
+    fetch(`${RECIPES_URL}/${recipe.id}`)
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(object) {
+            let array = object.ratings
+            let ratingsArray = array.map(rating => {
+            return rating.value
+            })
+        if (ratingsArray.length === 0) {
+            ratingContainer.innerHTML = `☆☆☆☆☆`
+        }
+        else {
+        let avgRating = ratingsArray.reduce((a, b) => (a + b)) / ratingsArray.length;
+    
     if (avgRating >= 0 && avgRating < 1) {
-        return `☆☆☆☆☆`
+        ratingContainer.innerHTML = `☆☆☆☆☆`
         }
     else if (avgRating >= 1 && avgRating < 2) {
-        return `★☆☆☆☆`
+        ratingContainer.innerHTML = `★☆☆☆☆`
         }
     else if (avgRating >= 2 && avgRating < 3) {
-        return `★★☆☆☆`
+        ratingContainer.innerHTML = `★★☆☆☆`
         }
     else if (avgRating >= 3 && avgRating < 4) {
-        return `★★★☆☆`
+        ratingContainer.innerHTML = `★★★☆☆`
         }
-    else if (avgRating >= 3 && avgRating < 4) {
-        return `★★★★☆`
+    else if (avgRating >= 4 && avgRating < 5) {
+        ratingContainer.innerHTML = `★★★★☆`
         }
     else {
-        return `★★★★★`
+        ratingContainer.innerHTML = `★★★★★`
     }
-
+    }   
+    })
 }
 
 function addRatingFeature (recipe) {
@@ -487,28 +497,28 @@ function changeStarColor(starArray) {
 }
 
 function addRating(recipe, number) {
-    let stars = document.getElementById("rating-feature")
-    stars.className = "clicked"
-    let ratingData = {
-        "value": number,
-        "recipe_id": recipe.id,
-        };
-        let configObj = {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "Accept": "application/json"
-            },
-            body: JSON.stringify(ratingData)
-          };
-          fetch(RATINGS_URL, configObj)
-          .then(function(response) {
-              return response.json();
-          })
-          .then(function(object) {
-            let rating = document.getElementsByClassName("rating")
-            rating.innerText = renderRatings(object.ratings)
-          });
+    // let stars = document.getElementById("rating-feature")
+    // stars.className = "clicked"
+    // let ratingData = {
+    //     "value": number,
+    //     "recipe_id": recipe.id,
+    //     };
+    //     let configObj = {
+    //         method: "POST",
+    //         headers: {
+    //           "Content-Type": "application/json",
+    //           "Accept": "application/json"
+    //         },
+    //         body: JSON.stringify(ratingData)
+    //       };
+    //       fetch(RATINGS_URL, configObj)
+    //       .then(function(response) {
+    //           return response.json();
+    //       })
+    //       .then(function(object) {
+    //         let rating = document.getElementsByClassName("rating")
+    //         rating.innerText = renderRatings(object.ratings)
+    //       });
 
 
 
