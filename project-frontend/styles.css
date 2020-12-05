@@ -45,6 +45,9 @@
     /* font-family: Helvetica; */
   }
   
+  p.clicked {
+    pointer-events:none;
+  }
   /* li {
     font-size: 1.05em;
     list-style: none;

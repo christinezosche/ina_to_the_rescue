@@ -51,6 +51,7 @@ class Recipe {
   }
 
 const RECIPES_URL = `http://localhost:3000/recipes`
+const RATINGS_URL = `http://localhost:3000/ratings`
 
 document.addEventListener('DOMContentLoaded', () => {
     fetch(RECIPES_URL)
@@ -283,7 +284,6 @@ function fetchMatchingRecipe(recipeArray) {
     timeList.disabled = true;
     let question = document.getElementById('time-question')
     question.className = "selected"
-    const container = document.getElementById('container')
 
     let selectedRecipe = recipeArray[0]
 
@@ -482,5 +482,28 @@ function changeStarColor(starArray) {
 }
 
 function addRating(recipe, number) {
+    let stars = document.getElementById("rating")
+    stars.className = "clicked"
+    let ratingData = {
+        "value": number,
+        "recipe_id": recipe.id,
+        };
+        let configObj = {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json"
+            },
+            body: JSON.stringify(ratingData)
+          };
+          fetch(RATINGS_URL, configObj)
+          .then(function(response) {
+              return response.json();
+          })
+          .then(function(object) {
+              
+          });
+
+
 
 }
