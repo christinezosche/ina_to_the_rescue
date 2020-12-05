@@ -45,7 +45,7 @@
     /* font-family: Helvetica; */
   }
   
-  p.clicked {
+  h3.clicked {
     pointer-events:none;
   }
   /* li {

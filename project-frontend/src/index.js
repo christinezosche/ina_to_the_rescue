@@ -110,7 +110,7 @@ function findRecipesByCourse () {
 
 
 function renderRecipeName(recipe) {
-    let potentialResults = document.getElementById('results')
+    let potentialResults = document.getElementById('footer')
     let item = document.createElement('p')
     item.innerHTML = recipe.name
     potentialResults.appendChild(item)
@@ -174,7 +174,7 @@ function findRecipesByIngredients() {
                 ingredientsButton.removeEventListener('click', findRecipesByIngredients)
                 question.className = "selected"
                 appendTimeQuestion()
-                let potentialResults = document.getElementById('results')
+                let potentialResults = document.getElementById('footer')
                 potentialResults.innerHTML = ''
                 for (const recipe of filteredRecipes) {
                     renderRecipeName(recipe)
@@ -244,7 +244,7 @@ let ingredientsText = document.querySelector('input[name="ingredients"]')
 const ingredients = sanitizeAndSplit(ingredientsText.value)
 let filteredRecipes = Recipe.filterByCourseIngredientsAndTime(courseList.value, ingredients, parseInt(timeList.value))
 let question = document.getElementById('time-question')
-let potentialResults = document.getElementById('results')
+let potentialResults = document.getElementById('footer')
 if (question.childNodes[2]) {
     removeAlert(question, 2); }
 
@@ -319,16 +319,21 @@ function renderRecipeCard(recipe) {
     }
     let steps = document.createElement("p")
     steps.innerText = recipe.steps
-    let ratingFeature = addRatingFeature(recipe)
+    let ratingLine = document.createElement("h3")
+    ratingLine.innerText = 'Rate this recipe'
+    let ratingFeature = document.createElement("h3")
+    ratingFeature.id = 'rating-feature'
+    ratingLine.appendChild(ratingFeature)
 
     newDiv.appendChild(title)
     newDiv.appendChild(rating)
     newDiv.appendChild(time)
     newDiv.appendChild(ingredients)
     newDiv.appendChild(steps)
-    newDiv.appendChild(ratingFeature)
+    newDiv.appendChild(ratingLine)
     container.appendChild(newDiv)
     renderRatings(recipe)
+    addRatingFeature(recipe)
 }
 
 function recipeTime(minutes) {
@@ -352,7 +357,7 @@ function recipeTime(minutes) {
 
 function renderFooter(recipeArray) {
     const container = document.getElementById('container')
-    const footer = document.getElementById('results')
+    const footer = document.getElementById('footer')
     let prompt = document.createElement("h3")
     prompt.innerText = `Don't like this recipe?`
     let btn1 = document.createElement("button")
@@ -455,70 +460,107 @@ function renderRatings(recipe) {
 }
 
 function addRatingFeature (recipe) {
-
-    let stars = document.createElement("p")
-    stars.innerText = `Rate this recipe: `
-    stars.id = "rating-feature"
-    let star1 = document.createElement("p")
+    let ratingFeature = document.getElementById('rating-feature')
+   
+    let star1 = document.createElement('button')
+    star1.className = "star"
     star1.innerText = `☆`
-    star1.addEventListener("hover", changeStarColor([star1]))
-    star1.addEventListener("click", addRating(recipe, 1))
-    let star2 = document.createElement("p")
+    star1.addEventListener("mouseover", function () {
+        star1.innerText = `★`
+    }, false)
+    star1.addEventListener("mouseout", function () {
+        star1.innerText = `☆`
+    }, false)
+    star1.addEventListener("click", function () {
+        addRating(recipe, 1)
+    }, false)
+
+    let star2 = document.createElement('button')
     star2.innerText = `☆`
-    star2.addEventListener("hover", changeStarColor([star1, star2]))
-    star2.addEventListener("click", addRating(recipe, 2))
-    let star3 = document.createElement("p")
+    star2.className = "star"
+    star2.addEventListener("mouseover", function () {
+        [star1, star2].forEach (star => star.innerText = `★`)
+    }, false)
+    star2.addEventListener("mouseout", function () {
+        [star1, star2].forEach (star => star.innerText = `☆`)
+    }, false)
+    star2.addEventListener("click", function () {
+        addRating(recipe, 2)
+    }, false)
+
+    let star3 = document.createElement('button')
     star3.innerText = `☆`
-    star3.addEventListener("hover", changeStarColor([star1, star2, star3]))
-    star3.addEventListener("click", addRating(recipe, 3))
-    let star4 = document.createElement("p")
+    star3.className = "star"
+    star3.addEventListener("mouseover", function () {
+        [star1, star2, star3].forEach (star => star.innerText = `★`)
+    }, false)
+    star3.addEventListener("mouseout", function () {
+        [star1, star2, star3].forEach (star => star.innerText = `☆`)
+    }, false)
+    star3.addEventListener("click", function () {
+        addRating(recipe, 3)
+    }, false)
+
+    let star4 = document.createElement('button')
     star4.innerText = `☆`
-    star4.addEventListener("hover", changeStarColor([star1, star2, star3, star4]))
-    star4.addEventListener("click", addRating(recipe, 4))
-    let star5 = document.createElement("p")
+    star4.className = "star"
+    star4.addEventListener("mouseover", function () {
+        [star1, star2, star3, star4].forEach (star => star.innerText = `★`)
+    }, false)
+    star4.addEventListener("mouseout", function () {
+        [star1, star2, star3, star4].forEach (star => star.innerText = `☆`)
+    }, false)
+    star4.addEventListener("click", function () {
+        addRating(recipe, 4)
+    }, false)
+
+    let star5 = document.createElement('button')
     star5.innerText = `☆`
-    star5.addEventListener("hover", changeStarColor([star1, star2, star3, star4, star5]))
-    star5.addEventListener("click", addRating(recipe, 5))
-
-    stars.appendChild(star1)
-    stars.appendChild(star2)
-    stars.appendChild(star3)
-    stars.appendChild(star4)
-    stars.appendChild(star5)
-
-    return stars
+    star5.className = "star"
+    star5.addEventListener("mouseover", function () {
+        [star1, star2, star3, star4, star5].forEach (star => star.innerText = `★`)
+        }, false)
+    star5.addEventListener("mouseout", function () {
+        [star1, star2, star3, star4, star5].forEach (star => star.innerText = `☆`)
+    }, false)
+    star5.addEventListener("click", function () {
+        addRating(recipe, 5)
+    }, false)
+    
+    ratingFeature.appendChild(star1)
+    ratingFeature.appendChild(star2)
+    ratingFeature.appendChild(star3)
+    ratingFeature.appendChild(star4)
+    ratingFeature.appendChild(star5)
 
 }
 
-function changeStarColor(starArray) {
-    for (const star of starArray) {
-        star.innerText = `★`
-    }
-}
 
 function addRating(recipe, number) {
-    // let stars = document.getElementById("rating-feature")
-    // stars.className = "clicked"
-    // let ratingData = {
-    //     "value": number,
-    //     "recipe_id": recipe.id,
-    //     };
-    //     let configObj = {
-    //         method: "POST",
-    //         headers: {
-    //           "Content-Type": "application/json",
-    //           "Accept": "application/json"
-    //         },
-    //         body: JSON.stringify(ratingData)
-    //       };
-    //       fetch(RATINGS_URL, configObj)
-    //       .then(function(response) {
-    //           return response.json();
-    //       })
-    //       .then(function(object) {
-    //         let rating = document.getElementsByClassName("rating")
-    //         rating.innerText = renderRatings(object.ratings)
-    //       });
+
+    let ratingData = {
+         "value": number,
+         "recipe_id": recipe.id,
+         };
+         let configObj = {
+             method: "POST",
+             headers: {
+               "Content-Type": "application/json",
+               "Accept": "application/json"
+             },
+             body: JSON.stringify(ratingData)
+           };
+           fetch(RATINGS_URL, configObj)
+           .then(function(response) {
+               return response.json();
+           })
+           .then(function(object) {
+             const container = document.getElementById('container')
+             container.innerHTML = ''
+             renderRecipeCard(recipe)
+             let ratingFeature = document.getElementById('rating-feature')
+             ratingFeature.className = "clicked";
+           });
 
 
 
