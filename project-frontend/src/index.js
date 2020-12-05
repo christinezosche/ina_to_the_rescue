@@ -307,7 +307,8 @@ function renderRecipeCard(recipe) {
     let title = document.createElement("h1")
     title.innerText = `${recipe.name}`
     let rating = document.createElement("h2")
-    rating.innerText = `&#9734; ${recipe.ratings}`
+    rating.className = "rating"
+    rating.innerText = renderRatings(recipe.ratings)
     let time = document.createElement("h2")
     time.innerText = recipeTime(recipe.time)
     let ingredients = document.createElement("ul")
@@ -319,11 +320,14 @@ function renderRecipeCard(recipe) {
     }
     let steps = document.createElement("p")
     steps.innerText = recipe.steps
+    let ratingFeature = addRatingFeature(recipe)
+
     newDiv.appendChild(title)
     newDiv.appendChild(rating)
     newDiv.appendChild(time)
     newDiv.appendChild(ingredients)
     newDiv.appendChild(steps)
+    newDiv.appendChild(ratingFeature)
     container.appendChild(newDiv)
 
 }
@@ -401,7 +405,8 @@ function renderMiniCards(array) {
         })
     })
     let rating = document.createElement("h2")
-    rating.innerText = `&#9734; ${recipe.ratings}`
+    rating.className = "rating"
+    rating.innerText = renderRatings(recipe.ratings)
     let time = document.createElement("h2")
     time.innerText = recipeTime(recipe.time)
     newDiv.appendChild(title)
@@ -409,4 +414,73 @@ function renderMiniCards(array) {
     newDiv.appendChild(time)
     container.appendChild(newDiv)
     }
+}
+
+function renderRatings(ratingsArray) {
+    let avgRating = ratingsArray.reduce((a, b) => (a + b)) / ratingsArray.length;
+    if (avgRating >= 0 && avgRating < 1) {
+        return `☆☆☆☆☆`
+        }
+    else if (avgRating >= 1 && avgRating < 2) {
+        return `★☆☆☆☆`
+        }
+    else if (avgRating >= 2 && avgRating < 3) {
+        return `★★☆☆☆`
+        }
+    else if (avgRating >= 3 && avgRating < 4) {
+        return `★★★☆☆`
+        }
+    else if (avgRating >= 3 && avgRating < 4) {
+        return `★★★★☆`
+        }
+    else {
+        return `★★★★★`
+    }
+
+}
+
+function addRatingFeature (recipe) {
+
+    let stars = document.createElement("p")
+    stars.innerText = `Rate this recipe: `
+    stars.id = "rating"
+    let star1 = document.createElement("p")
+    star1.innerText = `☆`
+    star1.addEventListener("hover", changeStarColor([star1])
+    star1.addEventListener("click", addRating(recipe, 1))
+    let star2 = document.createElement("p")
+    star2.innerText = `☆`
+    star2.addEventListener("hover", changeStarColor([star1, star2])
+    star2.addEventListener("click", addRating(recipe, 2))
+    let star3 = document.createElement("p")
+    star3.innerText = `☆`
+    star3.addEventListener("hover", changeStarColor([star1, star2, star3])
+    star3.addEventListener("click", addRating(recipe, 3))
+    let star4 = document.createElement("p")
+    star4.innerText = `☆`
+    star4.addEventListener("hover", changeStarColor([star1, star2, star3, star4])
+    star4.addEventListener("click", addRating(recipe, 4))
+    let star5 = document.createElement("p")
+    star5.innerText = `☆`
+    star5.addEventListener("hover", changeStarColor([star1, star2, star3, star4, star5])
+    star5.addEventListener("click", addRating(recipe, 5))
+
+    stars.appendChild(star1)
+    stars.appendChild(star2)
+    stars.appendChild(star3)
+    stars.appendChild(star4)
+    stars.appendChild(star5)
+
+    return stars
+
+}
+
+function changeStarColor(starArray) {
+    for (const star of starArray) {
+        star.innerText = `★`
+    }
+}
+
+function addRating(recipe, number) {
+
 }
