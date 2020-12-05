@@ -417,7 +417,12 @@ function renderMiniCards(array) {
 }
 
 function renderRatings(ratingsArray) {
+    if (ratingsArray === []) {
+        let avgRating = 0
+    }
+    else {
     let avgRating = ratingsArray.reduce((a, b) => (a + b)) / ratingsArray.length;
+    }
     if (avgRating >= 0 && avgRating < 1) {
         return `☆☆☆☆☆`
         }
@@ -443,26 +448,26 @@ function addRatingFeature (recipe) {
 
     let stars = document.createElement("p")
     stars.innerText = `Rate this recipe: `
-    stars.id = "rating"
+    stars.id = "rating-feature"
     let star1 = document.createElement("p")
     star1.innerText = `☆`
-    star1.addEventListener("hover", changeStarColor([star1])
+    star1.addEventListener("hover", changeStarColor([star1]))
     star1.addEventListener("click", addRating(recipe, 1))
     let star2 = document.createElement("p")
     star2.innerText = `☆`
-    star2.addEventListener("hover", changeStarColor([star1, star2])
+    star2.addEventListener("hover", changeStarColor([star1, star2]))
     star2.addEventListener("click", addRating(recipe, 2))
     let star3 = document.createElement("p")
     star3.innerText = `☆`
-    star3.addEventListener("hover", changeStarColor([star1, star2, star3])
+    star3.addEventListener("hover", changeStarColor([star1, star2, star3]))
     star3.addEventListener("click", addRating(recipe, 3))
     let star4 = document.createElement("p")
     star4.innerText = `☆`
-    star4.addEventListener("hover", changeStarColor([star1, star2, star3, star4])
+    star4.addEventListener("hover", changeStarColor([star1, star2, star3, star4]))
     star4.addEventListener("click", addRating(recipe, 4))
     let star5 = document.createElement("p")
     star5.innerText = `☆`
-    star5.addEventListener("hover", changeStarColor([star1, star2, star3, star4, star5])
+    star5.addEventListener("hover", changeStarColor([star1, star2, star3, star4, star5]))
     star5.addEventListener("click", addRating(recipe, 5))
 
     stars.appendChild(star1)
@@ -482,7 +487,7 @@ function changeStarColor(starArray) {
 }
 
 function addRating(recipe, number) {
-    let stars = document.getElementById("rating")
+    let stars = document.getElementById("rating-feature")
     stars.className = "clicked"
     let ratingData = {
         "value": number,
@@ -501,7 +506,8 @@ function addRating(recipe, number) {
               return response.json();
           })
           .then(function(object) {
-              
+            let rating = document.getElementsByClassName("rating")
+            rating.innerText = renderRatings(object.ratings)
           });
 
 
