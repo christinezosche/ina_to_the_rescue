@@ -423,14 +423,35 @@ function renderMiniCards(array) {
         })
     })
     let rating = document.createElement("h2")
-    rating.id = recipe.id
+    rating.innerHTML = renderStars(recipe.avgRating)
     let time = document.createElement("h2")
     time.innerText = recipeTime(recipe.time)
     newDiv.appendChild(title)
     newDiv.appendChild(rating)
     newDiv.appendChild(time)
     container.appendChild(newDiv)
-    renderRatings(recipe)
+    
+    }
+}
+
+function renderStars(value) {
+    if (value >= 0 && value < 1) {
+        return `☆☆☆☆☆`
+        }
+    else if (value >= 1 && value < 2) {
+        return `★☆☆☆☆`
+        }
+    else if (value >= 2 && value < 3) {
+        return `★★☆☆☆`
+        }
+    else if (value >= 3 && value < 4) {
+        return `★★★☆☆`
+        }
+    else if (value >= 4 && value < 5) {
+        return `★★★★☆`
+        }
+    else {
+        return `★★★★★`
     }
 }
 
@@ -449,26 +470,27 @@ function renderRatings(recipe) {
             ratingContainer.innerHTML = `☆☆☆☆☆`
         }
         else {
-        let avgRating = ratingsArray.reduce((a, b) => (a + b)) / ratingsArray.length;
+        let value = ratingsArray.reduce((a, b) => (a + b)) / ratingsArray.length;
     
-    if (avgRating >= 0 && avgRating < 1) {
-        ratingContainer.innerHTML = `☆☆☆☆☆`
-        }
-    else if (avgRating >= 1 && avgRating < 2) {
-        ratingContainer.innerHTML = `★☆☆☆☆`
-        }
-    else if (avgRating >= 2 && avgRating < 3) {
-        ratingContainer.innerHTML = `★★☆☆☆`
-        }
-    else if (avgRating >= 3 && avgRating < 4) {
-        ratingContainer.innerHTML = `★★★☆☆`
-        }
-    else if (avgRating >= 4 && avgRating < 5) {
-        ratingContainer.innerHTML = `★★★★☆`
-        }
-    else {
-        ratingContainer.innerHTML = `★★★★★`
-    }
+    ratingContainer.innerHTML = renderStars(value)
+    // if (avgRating >= 0 && avgRating < 1) {
+    //     ratingContainer.innerHTML = `☆☆☆☆☆`
+    //     }
+    // else if (avgRating >= 1 && avgRating < 2) {
+    //     ratingContainer.innerHTML = `★☆☆☆☆`
+    //     }
+    // else if (avgRating >= 2 && avgRating < 3) {
+    //     ratingContainer.innerHTML = `★★☆☆☆`
+    //     }
+    // else if (avgRating >= 3 && avgRating < 4) {
+    //     ratingContainer.innerHTML = `★★★☆☆`
+    //     }
+    // else if (avgRating >= 4 && avgRating < 5) {
+    //     ratingContainer.innerHTML = `★★★★☆`
+    //     }
+    // else {
+    //     ratingContainer.innerHTML = `★★★★★`
+    // }
     }   
     })
 }
