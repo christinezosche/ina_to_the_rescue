@@ -58,8 +58,10 @@ class Recipe {
         }
     }
 
-    static sortAllByRating = () => 
-         this.all.sort((a, b) => b.avgRating - a.avgRating)
+    static sortAllByRatingAndCourse (course) { 
+        let filteredByCourse = Recipe.filterByCourse(course)
+        return filteredByCourse.sort((a, b) => b.avgRating - a.avgRating)
+    }
     
   }
 
@@ -309,7 +311,7 @@ function fetchMatchingRecipe(recipeArray) {
             const container = document.getElementById('container')
             container.innerHTML = ''
             renderRecipeCard(object)
-            renderFooter(recipeArray)
+            renderFooter(recipeArray, selectedRecipe.course)
             })
 }
 
@@ -369,7 +371,7 @@ function recipeTime(minutes) {
     }
 }
 
-function renderFooter(recipeArray) {
+function renderFooter(recipeArray, course) {
     const container = document.getElementById('container')
     const footer = document.getElementById('footer')
     let prompt = document.createElement("h3")
@@ -384,13 +386,13 @@ function renderFooter(recipeArray) {
         renderMiniCards(recipeArray)
     })
     let btn2 = document.createElement("button")
-    btn2.innerText = `See All Recipes`
+    btn2.innerText = `See All ${course.charAt(0).toUpperCase() + course.slice(1)}s`
     btn2.addEventListener("click", function (){
         if (prompt) {
             prompt.remove();
         }
         container.innerHTML = ''
-        renderMiniCards(Recipe.sortAllByRating())
+        renderMiniCards(Recipe.sortAllByRatingAndCourse(course))
     })
     let btn3 = document.createElement("button")
     btn3.innerText = `Start Over`
@@ -450,28 +452,32 @@ function renderRatings(recipe) {
         }
         else {
         let avgRating = ratingsArray.reduce((a, b) => (a + b)) / ratingsArray.length;
-    
-    if (avgRating >= 0 && avgRating < 1) {
-        ratingContainer.innerHTML = `☆☆☆☆☆`
-        }
-    else if (avgRating >= 1 && avgRating < 2) {
-        ratingContainer.innerHTML = `★☆☆☆☆`
-        }
-    else if (avgRating >= 2 && avgRating < 3) {
-        ratingContainer.innerHTML = `★★☆☆☆`
-        }
-    else if (avgRating >= 3 && avgRating < 4) {
-        ratingContainer.innerHTML = `★★★☆☆`
-        }
-    else if (avgRating >= 4 && avgRating < 5) {
-        ratingContainer.innerHTML = `★★★★☆`
-        }
-    else {
-        ratingContainer.innerHTML = `★★★★★`
-    }
+            ratingContainer.innerHTML = renderStars(avgRating)
     }   
     })
 }
+
+function renderStars(value) {
+    if (value >= 0 && value < 1) {
+        return `☆☆☆☆☆`
+        }
+    else if (value >= 1 && value < 2) {
+        return `★☆☆☆☆`
+        }
+    else if (value >= 2 && value < 3) {
+        return `★★☆☆☆`
+        }
+    else if (value >= 3 && value < 4) {
+        return `★★★☆☆`
+        }
+    else if (value >= 4 && value < 5) {
+        return `★★★★☆`
+        }
+    else {
+        return `★★★★★`
+    }
+}
+
 
 function addRatingFeature (recipe) {
     let ratingFeature = document.getElementById('rating-feature')

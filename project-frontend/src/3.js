@@ -12,16 +12,18 @@ class Recipe {
     
 
     get avgRating() {
-       let ratingsArray = this.ratings.map(rating => {
-                return rating.value
-                })
-                if (ratingsArray.length === 0) {
-                return 0
-                }
-                else {
-                return ratingsArray.reduce((a, b) => (a + b)) / ratingsArray.length;
-                }
+        if (this.ratings.length === 0) {
+            return 0
+            }
+        else {
+            return this.ratings.reduce((a, b) => (a + b)) / this.ratings.length;
+            }
       }
+    
+    modifyAvgRating (newValue) {
+        this.ratings.push(newValue)
+        return this.avgRating
+    }
 
     static filterByCourse = (search) => 
         this.all.filter(recipe => {
@@ -300,28 +302,39 @@ function fetchMatchingRecipe(recipeArray) {
     question.className = "selected"
 
     let selectedRecipe = recipeArray[0]
+    const container = document.getElementById('container')
+    container.innerHTML = ''
+    renderRecipeCard(selectedRecipe)
+    renderFooter(recipeArray)
 
-    fetch(`${RECIPES_URL}/${selectedRecipe.id}`)
-        .then(function(response) {
-            return response.json();
-        })
-        .then(function(object) {
-            const container = document.getElementById('container')
-            container.innerHTML = ''
-            renderRecipeCard(object)
-            renderFooter(recipeArray)
-            })
+    // fetch(`${RECIPES_URL}/${selectedRecipe.id}`)
+    //     .then(function(response) {
+    //         return response.json();
+    //     })
+    //     .then(function(object) {
+    //         const container = document.getElementById('container')
+    //         container.innerHTML = ''
+    //         renderRecipeCard(object)
+    //         renderFooter(recipeArray)
+    //         })
 }
 
 function renderRecipeCard(recipe) {
     const container = document.getElementById('container')
     const newDiv = document.createElement('div')
+    fetch(`${RECIPES_URL}/${recipe.id}`)
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(object) {
+            let recipeSteps = object.steps
+            
     newDiv.className = 'card'
     newDiv.id = 'matching-recipe'
     let title = document.createElement("h1")
     title.innerText = `${recipe.name}`
     let rating = document.createElement("h2")
-    rating.id = recipe.id
+    rating.innerText = renderStars(recipe.avgRating)
     let time = document.createElement("h2")
     time.innerText = recipeTime(recipe.time)
     let ingredients = document.createElement("ul")
@@ -332,7 +345,7 @@ function renderRecipeCard(recipe) {
         ingredients.appendChild(li)
     }
     let steps = document.createElement("p")
-    steps.innerText = recipe.steps
+    steps.innerText = recipeSteps
     let ratingLine = document.createElement("h3")
     ratingLine.innerText = 'Rate this recipe'
     let ratingFeature = document.createElement("h3")
@@ -346,8 +359,9 @@ function renderRecipeCard(recipe) {
     newDiv.appendChild(steps)
     newDiv.appendChild(ratingLine)
     container.appendChild(newDiv)
-    renderRatings(recipe)
+    // renderRatings(recipe)
     addRatingFeature(recipe)
+})
 }
 
 function recipeTime(minutes) {
@@ -414,13 +428,14 @@ function renderMiniCards(array) {
     title.innerText = `${recipe.name}`
     title.addEventListener("click", function(){
         container.innerHTML = ''
-        fetch(`${RECIPES_URL}/${recipe.id}`)
-        .then(function(response) {
-            return response.json();
-        })
-        .then(function(object) {
-            renderRecipeCard(object)
-        })
+        renderRecipeCard(recipe)
+        // fetch(`${RECIPES_URL}/${recipe.id}`)
+        // .then(function(response) {
+        //     return response.json();
+        // })
+        // .then(function(object) {
+        //     renderRecipeCard(object)
+        // })
     })
     let rating = document.createElement("h2")
     rating.innerHTML = renderStars(recipe.avgRating)
@@ -455,45 +470,26 @@ function renderStars(value) {
     }
 }
 
-function renderRatings(recipe) {
-    let ratingContainer = document.getElementById(recipe.id)
-    fetch(`${RECIPES_URL}/${recipe.id}`)
-        .then(function(response) {
-            return response.json();
-        })
-        .then(function(object) {
-            let array = object.ratings
-            let ratingsArray = array.map(rating => {
-            return rating.value
-            })
-        if (ratingsArray.length === 0) {
-            ratingContainer.innerHTML = `☆☆☆☆☆`
-        }
-        else {
-        let value = ratingsArray.reduce((a, b) => (a + b)) / ratingsArray.length;
-    
-    ratingContainer.innerHTML = renderStars(value)
-    // if (avgRating >= 0 && avgRating < 1) {
-    //     ratingContainer.innerHTML = `☆☆☆☆☆`
-    //     }
-    // else if (avgRating >= 1 && avgRating < 2) {
-    //     ratingContainer.innerHTML = `★☆☆☆☆`
-    //     }
-    // else if (avgRating >= 2 && avgRating < 3) {
-    //     ratingContainer.innerHTML = `★★☆☆☆`
-    //     }
-    // else if (avgRating >= 3 && avgRating < 4) {
-    //     ratingContainer.innerHTML = `★★★☆☆`
-    //     }
-    // else if (avgRating >= 4 && avgRating < 5) {
-    //     ratingContainer.innerHTML = `★★★★☆`
-    //     }
-    // else {
-    //     ratingContainer.innerHTML = `★★★★★`
-    // }
-    }   
-    })
-}
+// function renderRatings(recipe) {
+//     let ratingContainer = document.getElementById(recipe.id)
+//     fetch(`${RECIPES_URL}/${recipe.id}`)
+//         .then(function(response) {
+//             return response.json();
+//         })
+//         .then(function(object) {
+//             let array = object.ratings
+//             let ratingsArray = array.map(rating => {
+//             return rating.value
+//             })
+//         if (ratingsArray.length === 0) {
+//             ratingContainer.innerHTML = `☆☆☆☆☆`
+//         }
+//         else {
+//         let value = ratingsArray.reduce((a, b) => (a + b)) / ratingsArray.length;
+//         ratingContainer.innerHTML = renderStars(value)
+//         }   
+//     })
+// }
 
 function addRatingFeature (recipe) {
     let ratingFeature = document.getElementById('rating-feature')
@@ -573,6 +569,9 @@ function addRatingFeature (recipe) {
 
 
 function addRating(recipe, number) {
+   
+
+    recipe.modifyAvgRating(number)
 
     let ratingData = {
          "value": number,
@@ -591,13 +590,19 @@ function addRating(recipe, number) {
                return response.json();
            })
            .then(function(object) {
-             const container = document.getElementById('container')
-             container.innerHTML = ''
-             renderRecipeCard(recipe)
-             let ratingFeature = document.getElementById('rating-feature')
-             ratingFeature.className = "clicked";
+             
            });
 
+           const container = document.getElementById('container')
+           container.innerHTML = ''
+           renderRecipeCard(recipe)
+           deactivateRatingFeature()
+           //let ratingFeature = document.getElementById('rating-feature')
+           //ratingFeature.className = "clicked";
 
+}
 
+function deactivateRatingFeature () {
+    let ratingFeature = document.getElementById('rating-feature')
+    ratingFeature.className = "clicked";
 }
