@@ -339,7 +339,7 @@ function renderMiniCards(array) {
     for (const recipe of array) {
     const newDiv = document.createElement('div')
     newDiv.className = 'mini-card'
-    let title = document.createElement("h1")
+    let title = document.createElement("h3")
     title.innerText = `${recipe.name}`
     title.addEventListener("click", () => {
         container.innerHTML = ''
@@ -347,9 +347,9 @@ function renderMiniCards(array) {
         .then((response) => response.json())
         .then((object) => renderRecipeCard(object))
     })
-    let rating = document.createElement("h2")
+    let rating = document.createElement("p")
     rating.id = recipe.id
-    let time = document.createElement("h2")
+    let time = document.createElement("p")
     time.innerText = recipeTime(recipe.time)
     for (const element of [title, rating, time]) {
         newDiv.appendChild(element)

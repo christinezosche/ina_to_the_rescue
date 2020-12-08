@@ -1,10 +1,11 @@
 #container {
   padding: 1rem;
-  width: stretch;
+  width: 100%;
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   height: auto;
- 
+  
   /* f2f2f2 */
   opacity: .95;
 }
@@ -46,6 +47,7 @@ body {
   height: 10rem;
   /* display: inline-grid; */
   margin: 1rem 2rem;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 
@@ -109,6 +111,22 @@ input {
   height: flex;
   /* display: inline-grid; */
   margin: 1rem 2rem;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.mini-card {
+  text-align: center;
+  background: white;
+  /* margin: auto; */
+  /* margin-left: auto;
+  margin-right: auto; */
+  border: #3e8ede solid 2px;
+  padding: 1rem;
+  width: 10rem;
+  height: 15;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin: 1rem 1rem;
+  
 }
 
 
@@ -173,6 +191,7 @@ input {
     color: #3e8ede;
     font-style: italic;
   }
+  
   h3.prompt {
     text-align: center;
     color: #3e8ede;
