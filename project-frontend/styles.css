@@ -49,6 +49,8 @@ body {
 }
 
 
+
+
 button.main-button {
   border: 1px solid #3e8ede;
   background-color: white;
@@ -168,6 +170,11 @@ input {
   }
 
   h3 {
+    color: #3e8ede;
+    font-style: italic;
+  }
+  h3.prompt {
+    text-align: center;
     color: #3e8ede;
     font-style: italic;
   }

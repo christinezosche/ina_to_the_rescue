@@ -300,8 +300,10 @@ function recipeTime(minutes) {
 }
 
 function renderFooter(recipeArray, course) {
+    let newDiv = document.createElement("div")
     let prompt = document.createElement("h3")
-    prompt.innerText = `Don't like this recipe? `
+    prompt.className = 'prompt'
+    prompt.innerText = `Don't like this recipe?`
     let btn1 = document.createElement("button")
     btn1.innerText = `See Other Matches`
     btn1.className = 'footer-button'
@@ -327,10 +329,10 @@ function renderFooter(recipeArray, course) {
     btn3.className = 'footer-button'
     btn3.addEventListener("click", () => location.reload())
     
-    for (const element of [btn1, btn2, btn3]) {
-    prompt.appendChild(element)
+    for (const element of [prompt, btn1, btn2, btn3]) {
+    newDiv.appendChild(element)
     }
-    footer.appendChild(prompt)
+    footer.appendChild(newDiv)
 }
 
 function renderMiniCards(array) {
