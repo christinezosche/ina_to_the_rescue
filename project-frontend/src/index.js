@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function renderPrompt () {
     let newDiv = document.createElement('div')
-    newDiv.className = 'card'
+    newDiv.className = 'main-card'
     newDiv.id = 'question-list'
     let question = document.createElement('p')
     question.id = "course-question"
