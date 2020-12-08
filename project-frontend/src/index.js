@@ -91,7 +91,6 @@ function renderPrompt () {
     container.appendChild(newDiv)
 }
 
-
 function findRecipesByCourse () {
     const courseList = document.getElementById('course-list')
     const filteredRecipes = Recipe.filterByCourse(courseList.value)
@@ -104,13 +103,6 @@ function findRecipesByCourse () {
         appendIngredientsQuestion()
     
         renderPossibleMatches(filteredRecipes)
-}
-      
-
-function renderRecipeName(recipe) {
-    let item = document.createElement('p')
-    item.innerHTML = recipe.name
-    footer.appendChild(item)
 }
 
 function appendIngredientsQuestion() {
@@ -176,44 +168,6 @@ function findRecipesByIngredients() {
     }
 }
 
-function renderPossibleMatches(array) {
-    footer.innerHTML = ''
-    for (const recipe of array) {
-        renderRecipeName(recipe)
-        }
-}
-
-function renderAlertButtons (node) {
-    const ingredientsButton = document.getElementById('ingredients-button')
-    const ingredientsText = document.querySelector('input[name="ingredients"]')
-    const question = document.getElementById('ingredients-question')
-
-    let btn1 = document.createElement("button")
-    btn1.id = "try-again-button"
-    btn1.innerText = "Try again"
-    let btn2 = document.createElement("button")
-    btn2.innerText = "Skip this step, I'll shop"
-    btn2.id = "shop-button"
-    btn1.addEventListener("click", () => {
-        ingredientsText.value = ''
-        removeAlert(question, 3);
-    })
-
-    btn2.addEventListener("click", () => {
-        removeAlert(question, 3);
-        ingredientsText.value = ''
-        question.className = "selected"
-        ingredientsButton.removeEventListener('click', findRecipesByIngredients)
-        appendTimeQuestion()
-    })
-    node.appendChild(btn1)
-    node.appendChild(btn2)
-}
-
-function removeAlert (element, index) {
-    element.removeChild(element.childNodes[index]);
-}
-
 function appendTimeQuestion () {
     const div = document.getElementById('question-list')
     let question = document.createElement('p')
@@ -265,13 +219,6 @@ function findRecipesByTime () {
         footer.innerHTML = ''
         fetchMatchingRecipe(filteredRecipes)
     }
-}
-
-
-function sanitizeAndSplit (string) {
-    let n = string.toLowerCase().replace(/[^A-Za-z0-9-' ]+/g, '')
-    let newString = n.replace(/[  ]+/g, ' ')
-    return newString.split(" ")
 }
 
 function fetchMatchingRecipe(recipeArray) {
@@ -377,8 +324,6 @@ function renderFooter(recipeArray, course) {
     }
 }
 
-
-
 function renderMiniCards(array) {
     for (const recipe of array) {
     const newDiv = document.createElement('div')
@@ -441,7 +386,6 @@ function renderStars(value) {
     }
 }
 
-
 function addRatingFeature (recipe) {
     let ratingFeature = document.getElementById('rating-feature')
    
@@ -500,4 +444,54 @@ function addRating(recipe, number) {
              let ratingFeature = document.getElementById('rating-feature')
              ratingFeature.className = "clicked";
            });
+}
+
+function renderAlertButtons (node) {
+    const ingredientsButton = document.getElementById('ingredients-button')
+    const ingredientsText = document.querySelector('input[name="ingredients"]')
+    const question = document.getElementById('ingredients-question')
+
+    let btn1 = document.createElement("button")
+    btn1.id = "try-again-button"
+    btn1.innerText = "Try again"
+    let btn2 = document.createElement("button")
+    btn2.innerText = "Skip this step, I'll shop"
+    btn2.id = "shop-button"
+    btn1.addEventListener("click", () => {
+        ingredientsText.value = ''
+        removeAlert(question, 3);
+    })
+
+    btn2.addEventListener("click", () => {
+        removeAlert(question, 3);
+        ingredientsText.value = ''
+        question.className = "selected"
+        ingredientsButton.removeEventListener('click', findRecipesByIngredients)
+        appendTimeQuestion()
+    })
+    node.appendChild(btn1)
+    node.appendChild(btn2)
+}
+
+function removeAlert (element, index) {
+    element.removeChild(element.childNodes[index]);
+}
+
+function renderRecipeName(recipe) {
+    let item = document.createElement('p')
+    item.innerHTML = recipe.name
+    footer.appendChild(item)
+}
+
+function renderPossibleMatches(array) {
+    footer.innerHTML = ''
+    for (const recipe of array) {
+        renderRecipeName(recipe)
+        }
+}
+
+function sanitizeAndSplit (string) {
+    let n = string.toLowerCase().replace(/[^A-Za-z0-9-' ]+/g, '')
+    let newString = n.replace(/[  ]+/g, ' ')
+    return newString.split(" ")
 }
