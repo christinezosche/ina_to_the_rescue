@@ -340,6 +340,7 @@ function renderMiniCards(array) {
     const newDiv = document.createElement('div')
     newDiv.className = 'mini-card'
     let title = document.createElement("h3")
+    title.className = 'title'
     title.innerText = `${recipe.name}`
     title.addEventListener("click", () => {
         container.innerHTML = ''
@@ -489,8 +490,9 @@ function removeAlert (element, index) {
 }
 
 function renderRecipeName(recipe) {
-    let item = document.createElement('p')
-    item.innerHTML = recipe.name
+    let item = document.createElement('button')
+    item.innerText = recipe.name
+    item.className = 'potential-match'
     footer.appendChild(item)
 }
 
