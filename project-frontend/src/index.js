@@ -10,11 +10,8 @@ class Recipe {
       this.constructor.all.push(this)
     }
     
-
     get avgRating() {
-       let ratingsArray = this.ratings.map(rating => {
-                return rating.value
-                })
+       let ratingsArray = this.ratings.map(rating => rating.value)
                 if (ratingsArray.length === 0) {
                 return 0
                 }
@@ -24,15 +21,12 @@ class Recipe {
       }
 
     static filterByCourse = (search) => 
-        this.all.filter(recipe => {
-            return recipe.course.includes(search)
-            })
+        this.all.filter(recipe => recipe.course.includes(search))
     
     static filterByCourseAndIngredients (course, ingredients) {
         let filteredByCourse = Recipe.filterByCourse(course)
-        let filteredByCourseAndIngredients = filteredByCourse.filter(recipe => {
-            return ingredients.some(i => recipe.ingredients.toLowerCase().includes(i))
-        }) 
+        let filteredByCourseAndIngredients = filteredByCourse.filter(recipe =>
+            ingredients.some(i => recipe.ingredients.toLowerCase().includes(i))) 
         for (const recipe of filteredByCourseAndIngredients) {
             recipe.ingredientsCount = 0
            for (const i of ingredients) {
@@ -41,9 +35,7 @@ class Recipe {
                 }           
             }
         }
-        filteredByCourseAndIngredients.sort((a, b) => b.ingredientsCount - a.ingredientsCount);
-        return filteredByCourseAndIngredients
-
+        return filteredByCourseAndIngredients.sort((a, b) => b.ingredientsCount - a.ingredientsCount)
     }
 
     static filterByCourseIngredientsAndTime (course, ingredients, time) {
@@ -52,9 +44,7 @@ class Recipe {
             return filteredByCourseAndIngredients
         }
         else {
-        return filteredByCourseAndIngredients.filter(recipe => {
-            return recipe.time <= time
-        })
+        return filteredByCourseAndIngredients.filter(recipe => recipe.time <= time)
         }
     }
 
@@ -62,7 +52,6 @@ class Recipe {
         let filteredByCourse = Recipe.filterByCourse(course)
         return filteredByCourse.sort((a, b) => b.avgRating - a.avgRating)
     }
-    
   }
 
 const RECIPES_URL = `http://localhost:3000/recipes`
@@ -70,10 +59,8 @@ const RATINGS_URL = `http://localhost:3000/ratings`
 
 document.addEventListener('DOMContentLoaded', () => {
     fetch(RECIPES_URL)
-    .then(function(response) {
-        return response.json();
-      })
-    .then(function(array) {
+    .then((response) => response.json())
+    .then((array) => {
         for (const recipe of array) {
            new Recipe(recipe.id, recipe.name, recipe.ingredients, recipe.time, recipe.course, recipe.ratings)
           }
@@ -82,8 +69,10 @@ document.addEventListener('DOMContentLoaded', () => {
     renderPrompt()
 })
 
+const container = document.getElementById('container')
+const footer = document.getElementById('footer')
+
 function renderPrompt () {
-    const container = document.getElementById('container')
     const newDiv = document.createElement('div')
     newDiv.className = 'card'
     newDiv.id = 'question-list'
@@ -104,9 +93,8 @@ function renderPrompt () {
 }
 
 
-
 function findRecipesByCourse () {
-    let courseList = document.getElementById('course-list')
+    const courseList = document.getElementById('course-list')
     let filteredRecipes = Recipe.filterByCourse(courseList.value)
     courseList.removeEventListener("change", findRecipesByCourse)
     courseList.disabled = true;
@@ -116,19 +104,14 @@ function findRecipesByCourse () {
     
         appendIngredientsQuestion()
     
-        for (const recipe of filteredRecipes) {
-            renderRecipeName(recipe)
-          }
-        }
+        renderPossibleMatches(filteredRecipes)
+}
       
 
-
-
 function renderRecipeName(recipe) {
-    let potentialResults = document.getElementById('footer')
     let item = document.createElement('p')
     item.innerHTML = recipe.name
-    potentialResults.appendChild(item)
+    footer.appendChild(item)
 }
 
 function appendIngredientsQuestion() {
@@ -146,12 +129,10 @@ function appendIngredientsQuestion() {
         question.appendChild(input)
         question.appendChild(btn)
         div.appendChild(question)
-        btn.addEventListener('click', findRecipesByIngredients)
-       
+        btn.addEventListener('click', findRecipesByIngredients)    
 }
 
 function findRecipesByIngredients() {
-    let courseList = document.getElementById('course-list')
     let ingredientsButton = document.getElementById('ingredients-button')
     let ingredientsText = document.querySelector('input[name="ingredients"]')
     let question = document.getElementById('ingredients-question')
@@ -167,7 +148,7 @@ function findRecipesByIngredients() {
     else {
         if (question.childNodes[3]) {
             removeAlert(question, 3); }
-       
+            const courseList = document.getElementById('course-list')
             const ingredients = sanitizeAndSplit(ingredientsText.value)
             let filteredRecipes = Recipe.filterByCourseAndIngredients(courseList.value, ingredients)
        
@@ -190,15 +171,17 @@ function findRecipesByIngredients() {
                 ingredientsButton.removeEventListener('click', findRecipesByIngredients)
                 question.className = "selected"
                 appendTimeQuestion()
-                let potentialResults = document.getElementById('footer')
-                potentialResults.innerHTML = ''
-                for (const recipe of filteredRecipes) {
-                    renderRecipeName(recipe)
-                  }
+                renderPossibleMatches(filteredRecipes)
                 }
             }
-    
+    }
 }
+
+function renderPossibleMatches(array) {
+    footer.innerHTML = ''
+    for (const recipe of array) {
+        renderRecipeName(recipe)
+        }
 }
 
 function renderAlertButtons (node) {
@@ -212,12 +195,12 @@ function renderAlertButtons (node) {
     let btn2 = document.createElement("button")
     btn2.innerText = "Skip this step, I'll shop"
     btn2.id = "shop-button"
-    btn1.addEventListener("click", function (){
+    btn1.addEventListener("click", () => {
         ingredientsText.value = ''
         removeAlert(question, 3);
     })
 
-    btn2.addEventListener("click", function (){
+    btn2.addEventListener("click", () => {
         removeAlert(question, 3);
         ingredientsText.value = ''
         question.className = "selected"
@@ -254,36 +237,35 @@ function appendTimeQuestion () {
 }
 
 function findRecipesByTime () {
-let timeList = document.getElementById('time-list')
-let courseList = document.getElementById('course-list')
-let ingredientsText = document.querySelector('input[name="ingredients"]')
-const ingredients = sanitizeAndSplit(ingredientsText.value)
-let filteredRecipes = Recipe.filterByCourseIngredientsAndTime(courseList.value, ingredients, parseInt(timeList.value))
-let question = document.getElementById('time-question')
-let potentialResults = document.getElementById('footer')
-if (question.childNodes[2]) {
-    removeAlert(question, 2); }
+    const courseList = document.getElementById('course-list')
+    const timeList = document.getElementById('time-list')
+    const ingredientsText = document.querySelector('input[name="ingredients"]')
+    const ingredients = sanitizeAndSplit(ingredientsText.value)
+    const filteredRecipes = Recipe.filterByCourseIngredientsAndTime(courseList.value, ingredients, parseInt(timeList.value))
+    const question = document.getElementById('time-question')
+    
+    if (question.childNodes[2]) {
+        removeAlert(question, 2); }
 
-if (filteredRecipes.length === 0) {
-    let alert = document.createElement("p")
-    alert.className = "alert"
-    alert.innerText = `No recipes found. Choose another time. `
-    let btn = document.createElement("button")
-    btn.innerText = "Skip this step"
-    btn.addEventListener("click", function (){
+    if (filteredRecipes.length === 0) {
+        let alert = document.createElement("p")
+        alert.className = "alert"
+        alert.innerText = `No recipes found. Choose another time. `
+        let btn = document.createElement("button")
+        btn.innerText = "Skip this step"
+        btn.addEventListener("click", () => {
         removeAlert(question, 2);
-        potentialResults.innerHTML = ''
+        footer.innerHTML = ''
         fetchMatchingRecipe(Recipe.filterByCourseAndIngredients(courseList.value, ingredients))
-    })
-    alert.appendChild(btn)
-    question.appendChild(alert)
+        })
+        alert.appendChild(btn)
+        question.appendChild(alert)
+        }
+
+    else {
+        footer.innerHTML = ''
+        fetchMatchingRecipe(filteredRecipes)
     }
-
-else {
-    potentialResults.innerHTML = ''
-    fetchMatchingRecipe(filteredRecipes)
-}
-
 }
 
 
@@ -304,11 +286,8 @@ function fetchMatchingRecipe(recipeArray) {
     let selectedRecipe = recipeArray[0]
 
     fetch(`${RECIPES_URL}/${selectedRecipe.id}`)
-        .then(function(response) {
-            return response.json();
-        })
-        .then(function(object) {
-            const container = document.getElementById('container')
+        .then((response) => response.json())
+        .then((object) => {
             container.innerHTML = ''
             renderRecipeCard(object)
             renderFooter(recipeArray, selectedRecipe.course)
@@ -316,7 +295,6 @@ function fetchMatchingRecipe(recipeArray) {
 }
 
 function renderRecipeCard(recipe) {
-    const container = document.getElementById('container')
     const newDiv = document.createElement('div')
     newDiv.className = 'card'
     newDiv.id = 'matching-recipe'
@@ -372,7 +350,6 @@ function recipeTime(minutes) {
 }
 
 function renderFooter(recipeArray, course) {
-    const container = document.getElementById('container')
     const footer = document.getElementById('footer')
     let prompt = document.createElement("h3")
     prompt.innerText = `Don't like this recipe?`
@@ -408,7 +385,6 @@ function renderFooter(recipeArray, course) {
 
 
 function renderMiniCards(array) {
-    const container = document.getElementById('container')
     for (const recipe of array) {
     const newDiv = document.createElement('div')
     newDiv.className = 'mini-card'
@@ -417,12 +393,8 @@ function renderMiniCards(array) {
     title.addEventListener("click", function(){
         container.innerHTML = ''
         fetch(`${RECIPES_URL}/${recipe.id}`)
-        .then(function(response) {
-            return response.json();
-        })
-        .then(function(object) {
-            renderRecipeCard(object)
-        })
+        .then((response) => response.json())
+        .then((object) => renderRecipeCard(object))
     })
     let rating = document.createElement("h2")
     rating.id = recipe.id
@@ -439,10 +411,8 @@ function renderMiniCards(array) {
 function renderRatings(recipe) {
     let ratingContainer = document.getElementById(recipe.id)
     fetch(`${RECIPES_URL}/${recipe.id}`)
-        .then(function(response) {
-            return response.json();
-        })
-        .then(function(object) {
+        .then((response) => response.json())
+        .then((object) => {
             let array = object.ratings
             let ratingsArray = array.map(rating => {
             return rating.value
@@ -451,8 +421,8 @@ function renderRatings(recipe) {
             ratingContainer.innerHTML = `☆☆☆☆☆`
         }
         else {
-        let avgRating = ratingsArray.reduce((a, b) => (a + b)) / ratingsArray.length;
-            ratingContainer.innerHTML = renderStars(avgRating)
+        let avg = ratingsArray.reduce((a, b) => (a + b)) / ratingsArray.length;
+            ratingContainer.innerHTML = renderStars(avg)
     }   
     })
 }
@@ -571,11 +541,8 @@ function addRating(recipe, number) {
              body: JSON.stringify(ratingData)
            };
            fetch(RATINGS_URL, configObj)
-           .then(function(response) {
-               return response.json();
-           })
-           .then(function(object) {
-             const container = document.getElementById('container')
+           .then((response) => response.json())
+           .then((object) => {
              container.innerHTML = ''
              renderRecipeCard(recipe)
              let ratingFeature = document.getElementById('rating-feature')
