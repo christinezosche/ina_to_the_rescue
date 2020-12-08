@@ -117,6 +117,9 @@ function appendIngredientsQuestion() {
         let btn = document.createElement("button");
             btn.id = "ingredients-button"
             btn.innerText = `Enter`
+        let space = document.createElement("p");
+            space.innerHTML = ` `
+        input.appendChild(space)
         question.appendChild(input)
         question.appendChild(btn)
         div.appendChild(question)
@@ -131,8 +134,8 @@ function findRecipesByIngredients() {
         if (question.childNodes[3]) {
             removeAlert(question, 3); }
         let alert = document.createElement("p")
-            alert.innerText = `Please enter an ingredient.`
-            alert.className = "alert"
+            alert.innerHTML = `Please enter an ingredient.<br><br>`
+            alert.className = 'alert'
             renderAlertButtons(alert)
             question.appendChild(alert)
     }
@@ -145,12 +148,12 @@ function findRecipesByIngredients() {
        
             if (filteredRecipes.length === 0) {
                 let alert = document.createElement("p")
-                alert.className = "alert"
+                alert.className = 'alert'
                 if (ingredients.length > 1) {
-                alert.innerText = `No recipes found with those ingredients.` 
+                alert.innerHTML = `No recipes found with those ingredients.<br><br>` 
                 }
                 else {
-                    alert.innerText = `No recipes found with that ingredient.` 
+                    alert.innerHTML = `No recipes found with that ingredient.<br><br>` 
                 }
                 renderAlertButtons(alert)
                 question.appendChild(alert)
