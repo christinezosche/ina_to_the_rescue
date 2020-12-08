@@ -115,6 +115,7 @@ function appendIngredientsQuestion() {
             input.type = "text"
             input.name = "ingredients"
         let btn = document.createElement("button");
+            btn.className = 'main-button'
             btn.id = "ingredients-button"
             btn.innerText = `Enter`
         let space = document.createElement("p");
@@ -209,6 +210,7 @@ function findRecipesByTime () {
         alert.innerText = `No recipes found. Choose another time. `
         let btn = document.createElement("button")
         btn.innerText = "Skip this step"
+        btn.className = 'main-button'
         btn.addEventListener("click", () => {
         removeAlert(question, 2);
         footer.innerHTML = ''
@@ -262,7 +264,7 @@ function renderRecipeCard(recipe) {
     let steps = document.createElement("p")
     steps.innerText = recipe.steps
     let ratingLine = document.createElement("h3")
-    ratingLine.innerText = 'Rate this recipe'
+    ratingLine.innerHTML = `<br>Rate this recipe`
     let ratingFeature = document.createElement("h3")
     ratingFeature.id = 'rating-feature'
     ratingLine.appendChild(ratingFeature)
@@ -299,9 +301,10 @@ function recipeTime(minutes) {
 
 function renderFooter(recipeArray, course) {
     let prompt = document.createElement("h3")
-    prompt.innerText = `Don't like this recipe?`
+    prompt.innerText = `Don't like this recipe? `
     let btn1 = document.createElement("button")
     btn1.innerText = `See Other Matches`
+    btn1.className = 'footer-button'
     btn1.addEventListener("click", () => {
         if (prompt) {
         prompt.remove();
@@ -311,6 +314,7 @@ function renderFooter(recipeArray, course) {
     })
     let btn2 = document.createElement("button")
     btn2.innerText = `See All ${course.charAt(0).toUpperCase() + course.slice(1)}s`
+    btn2.className = 'footer-button'
     btn2.addEventListener("click", () => {
         if (prompt) {
             prompt.remove();
@@ -320,11 +324,13 @@ function renderFooter(recipeArray, course) {
     })
     let btn3 = document.createElement("button")
     btn3.innerText = `Start Over`
+    btn3.className = 'footer-button'
     btn3.addEventListener("click", () => location.reload())
     
-    for (const element of [prompt, btn1, btn2, btn3]) {
-    footer.appendChild(element)
+    for (const element of [btn1, btn2, btn3]) {
+    prompt.appendChild(element)
     }
+    footer.appendChild(prompt)
 }
 
 function renderMiniCards(array) {
@@ -414,7 +420,7 @@ function addRatingFeature (recipe) {
 
 function addFunctionsToStar(star, array, recipe) {
     star.innerText = `☆`
-    star.className = "star"
+    star.className = 'star'
     star.addEventListener("mouseover", () => {
         array.forEach (s => s.innerText = `★`)
     }, false)
@@ -455,11 +461,11 @@ function renderAlertButtons (node) {
     const question = document.getElementById('ingredients-question')
 
     let btn1 = document.createElement("button")
-    btn1.id = "try-again-button"
+    btn1.className = 'main-button'
     btn1.innerText = "Try again"
     let btn2 = document.createElement("button")
     btn2.innerText = "Skip this step, I'll shop"
-    btn2.id = "shop-button"
+    btn2.className = 'main-button'
     btn1.addEventListener("click", () => {
         ingredientsText.value = ''
         removeAlert(question, 3);
