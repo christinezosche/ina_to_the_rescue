@@ -350,12 +350,11 @@ function recipeTime(minutes) {
 }
 
 function renderFooter(recipeArray, course) {
-    const footer = document.getElementById('footer')
     let prompt = document.createElement("h3")
     prompt.innerText = `Don't like this recipe?`
     let btn1 = document.createElement("button")
     btn1.innerText = `See Other Matches`
-    btn1.addEventListener("click", function (){
+    btn1.addEventListener("click", () => {
         if (prompt) {
         prompt.remove();
         }
@@ -364,7 +363,7 @@ function renderFooter(recipeArray, course) {
     })
     let btn2 = document.createElement("button")
     btn2.innerText = `See All ${course.charAt(0).toUpperCase() + course.slice(1)}s`
-    btn2.addEventListener("click", function (){
+    btn2.addEventListener("click", () => {
         if (prompt) {
             prompt.remove();
         }
@@ -373,9 +372,7 @@ function renderFooter(recipeArray, course) {
     })
     let btn3 = document.createElement("button")
     btn3.innerText = `Start Over`
-    btn3.addEventListener("click", function (){
-        location.reload();
-    })
+    btn3.addEventListener("click", () => location.reload())
     footer.appendChild(prompt)
     footer.appendChild(btn1)
     footer.appendChild(btn2)
@@ -390,7 +387,7 @@ function renderMiniCards(array) {
     newDiv.className = 'mini-card'
     let title = document.createElement("h1")
     title.innerText = `${recipe.name}`
-    title.addEventListener("click", function(){
+    title.addEventListener("click", () => {
         container.innerHTML = ''
         fetch(`${RECIPES_URL}/${recipe.id}`)
         .then((response) => response.json())
@@ -455,65 +452,65 @@ function addRatingFeature (recipe) {
     let star1 = document.createElement('button')
     star1.className = "star"
     star1.innerText = `☆`
-    star1.addEventListener("mouseover", function () {
+    star1.addEventListener("mouseover", () => {
         star1.innerText = `★`
     }, false)
-    star1.addEventListener("mouseout", function () {
+    star1.addEventListener("mouseout", () => {
         star1.innerText = `☆`
     }, false)
-    star1.addEventListener("click", function () {
+    star1.addEventListener("click", () => {
         addRating(recipe, 1)
     }, false)
 
     let star2 = document.createElement('button')
     star2.innerText = `☆`
     star2.className = "star"
-    star2.addEventListener("mouseover", function () {
+    star2.addEventListener("mouseover", () => {
         [star1, star2].forEach (star => star.innerText = `★`)
     }, false)
-    star2.addEventListener("mouseout", function () {
+    star2.addEventListener("mouseout", () => {
         [star1, star2].forEach (star => star.innerText = `☆`)
     }, false)
-    star2.addEventListener("click", function () {
+    star2.addEventListener("click", () => {
         addRating(recipe, 2)
     }, false)
 
     let star3 = document.createElement('button')
     star3.innerText = `☆`
     star3.className = "star"
-    star3.addEventListener("mouseover", function () {
+    star3.addEventListener("mouseover", () => {
         [star1, star2, star3].forEach (star => star.innerText = `★`)
     }, false)
-    star3.addEventListener("mouseout", function () {
+    star3.addEventListener("mouseout", () => {
         [star1, star2, star3].forEach (star => star.innerText = `☆`)
     }, false)
-    star3.addEventListener("click", function () {
+    star3.addEventListener("click", () => {
         addRating(recipe, 3)
     }, false)
 
     let star4 = document.createElement('button')
     star4.innerText = `☆`
     star4.className = "star"
-    star4.addEventListener("mouseover", function () {
+    star4.addEventListener("mouseover", () => {
         [star1, star2, star3, star4].forEach (star => star.innerText = `★`)
     }, false)
-    star4.addEventListener("mouseout", function () {
+    star4.addEventListener("mouseout", () => {
         [star1, star2, star3, star4].forEach (star => star.innerText = `☆`)
     }, false)
-    star4.addEventListener("click", function () {
+    star4.addEventListener("click", () => {
         addRating(recipe, 4)
     }, false)
 
     let star5 = document.createElement('button')
     star5.innerText = `☆`
     star5.className = "star"
-    star5.addEventListener("mouseover", function () {
+    star5.addEventListener("mouseover", () => {
         [star1, star2, star3, star4, star5].forEach (star => star.innerText = `★`)
         }, false)
-    star5.addEventListener("mouseout", function () {
+    star5.addEventListener("mouseout", () => {
         [star1, star2, star3, star4, star5].forEach (star => star.innerText = `☆`)
     }, false)
-    star5.addEventListener("click", function () {
+    star5.addEventListener("click", () => {
         addRating(recipe, 5)
     }, false)
     
