@@ -105,7 +105,7 @@ function renderPrompt () {
     newDiv.id = 'question-list'
     let question = document.createElement('p')
     question.id = "course-question"
-    question.innerHTML = `What course are you making? `
+    question.innerHTML = `What course are you looking to make? `
     select = document.createElement("select");
     select.id = 'course-list'
     select.options.add( new Option(" ","", true, true) );
@@ -137,7 +137,7 @@ function appendIngredientsQuestion() {
     const div = document.getElementById('question-list')
         let question = document.createElement('p')
         question.id = "ingredients-question"
-        question.innerHTML = `What ingredients do you have? `
+        question.innerHTML = `What's in your pantry (or fridge)? `
         let input = document.createElement("input");
             input.placeholder = "Lemons, flour, eggs"
             input.type = "text"
@@ -201,7 +201,7 @@ function appendTimeQuestion () {
     const div = document.getElementById('question-list')
     let question = document.createElement('p')
     question.id = "time-question"
-    question.innerHTML = `How much time do you have? `
+    question.innerHTML = `How much time do you have to cook? `
     select = document.createElement("select");
     select.id = 'time-list'
     select.options.add( new Option(" ","", true, true) );
