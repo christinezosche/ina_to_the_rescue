@@ -68,8 +68,36 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         })
 
-    renderPrompt()
+    renderIntro()
 })
+
+function renderIntro() {
+    let newDiv = document.createElement('div')
+    newDiv.className = 'intro-card'
+    let h = document.createElement('h3')
+    h.innerText = `Ina to the Rescue!`
+    let statement = document.createElement('p')
+    statement.innerHTML = `Short on time? No idea what to make? 
+    Entertaining is hard. Ina Garten makes it easy. Enter a few details to find a recipe just for you!`
+    let btn = document.createElement('button')
+    btn.className = 'main-button'
+    btn.innerText = `Let's go!`
+    btn.addEventListener('click', () => {
+        container.innerHTML = ''
+        renderPrompt()
+    })
+    let p = document.createElement('p')
+    let img = document.createElement('img')
+    img.src = `https://media1.tenor.com/images/48d36170646d9ffd5ae83481dd0d3149/tenor.gif?itemid=5629568`
+    newDiv.appendChild(h)
+    newDiv.appendChild(statement)
+    newDiv.appendChild(btn)
+    p.appendChild(img)
+    newDiv.appendChild(p)
+    container.appendChild(newDiv)
+
+
+}
 
 function renderPrompt () {
     let newDiv = document.createElement('div')
@@ -118,9 +146,6 @@ function appendIngredientsQuestion() {
             btn.className = 'main-button'
             btn.id = "ingredients-button"
             btn.innerText = `Enter`
-        let space = document.createElement("p");
-            space.innerHTML = ` `
-        input.appendChild(space)
         question.appendChild(input)
         question.appendChild(btn)
         div.appendChild(question)
@@ -190,7 +215,6 @@ function appendTimeQuestion () {
     select.addEventListener("change", findRecipesByTime)
     question.appendChild(select)
     div.appendChild(question)
-    container.appendChild(div)
 }
 
 function findRecipesByTime () {
