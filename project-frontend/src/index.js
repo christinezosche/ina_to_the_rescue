@@ -170,7 +170,7 @@ function findRecipesByIngredients() {
             removeAlert(question, 3); }
             const courseList = document.getElementById('course-list')
             const ingredients = sanitizeAndSplit(ingredientsText.value)
-            let filteredRecipes = Recipe.filterByCourseAndIngredients(courseList.value, ingredients)
+            const filteredRecipes = Recipe.filterByCourseAndIngredients(courseList.value, ingredients)
        
             if (filteredRecipes.length === 0) {
                 let alert = document.createElement("p")
@@ -257,7 +257,7 @@ function fetchMatchingRecipe(recipeArray) {
     let question = document.getElementById('time-question')
     question.className = "selected"
 
-    let selectedRecipe = recipeArray[0]
+    const selectedRecipe = recipeArray[0]
 
     fetch(`${RECIPES_URL}/${selectedRecipe.id}`)
         .then((response) => response.json())
@@ -312,8 +312,8 @@ function recipeTime(minutes) {
         return `${minutes/60} hours`
     }
     else {
-        let rawQuotient = minutes/60
-        let remainder = rawQuotient % 1;
+        const rawQuotient = minutes/60
+        const remainder = rawQuotient % 1;
         if (remainder < 1 && remainder > 0.5) {
             return `${rawQuotient - remainder + 1} hours`
         }
