@@ -6,7 +6,7 @@ This app allows users to find an Ina Garten recipe based on the course they are 
 
 Fork and clone this repo. Cd into "project-backend". Run `bundle install` to install required gems. Run `rails db:migrate` to migrate tables, then run `rails db:seed` to seed the recipes. Run `rails s`.
 
-Then, cd into the main directory (cd ..), then cd into "project-frontend". Run "open index.html" to open the app in your browser. 
+Then, cd into the main directory ("cd .."), then cd into "project-frontend". Run "open index.html" to open the app in your browser. 
 
 ## Development
 
