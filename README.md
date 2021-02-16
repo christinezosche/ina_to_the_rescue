@@ -2,6 +2,8 @@
 
 This app allows users to find an Ina Garten recipe based on the course they are looking to make (starter, main, side or dessert), the ingredients they have on hand, and the time they have to cook. When these critera are entered, the top-matching recipe is displayed. Users also have the option to view additional matches and all recipes for the course they selected (i.e., see all desserts). They can also rate recipes.
 
+For a demo, visit: https://youtu.be/OtUhnUmGtbA
+
 ## Installation and Usage
 
 Fork and clone this repo. Cd into "project-backend". Run `bundle install` to install required gems. Run `rails db:migrate` to migrate tables, then run `rails db:seed` to seed the recipes. Run `rails s`.
