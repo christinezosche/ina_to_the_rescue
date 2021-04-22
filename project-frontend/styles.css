@@ -5,6 +5,23 @@
   justify-content: center;
   height: auto;
   opacity: .95;
+  width: 1440px;
+}
+
+#footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  background: white;
+  opacity: .95;
+  padding: 1rem;
+  width: 1440px;
+}
+
+body { font-size: 100%; }
+ 
+@media only screen and (max-width: 980px) {
+  body { font-size: 300%; }  
 }
 
 body {
@@ -33,6 +50,7 @@ img {
   background: white;
   opacity: .95;
   padding: 1rem;
+  width: 1440px;
 }
 
 @-webkit-keyframes fadeIn {
