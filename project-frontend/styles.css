@@ -5,31 +5,19 @@
   justify-content: center;
   height: auto;
   opacity: .95;
-  width: 1440px;
+  width: 100%;
 }
 
-#footer {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  background: white;
-  opacity: .95;
-  padding: 1rem;
-  width: 1440px;
-}
+
 
 body { font-size: 100%; }
  
 @media only screen and (max-width: 980px) {
-  body { font-size: 300%; };
   
-  #container { width: 50% };
+  body { font-size: 300%; };
   .intro-card {
   width: 90%;
-  height: 80%; };
-  button.main-button {
-    font-size: 200%
-  }
+  height: 80%; }
 }
 
 
@@ -60,7 +48,7 @@ img {
   background: white;
   opacity: .95;
   padding: 1rem;
-  width: 1440px;
+  width: 100%;
 }
 
 @-webkit-keyframes fadeIn {
